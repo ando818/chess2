@@ -1,15 +1,21 @@
 <script>
-	import { PerspectiveCamera, Group, MeshBasicMaterial, LineSegments, EdgesGeometry } from 'three';
+	import {
+		PerspectiveCamera,
+		Group,
+		MeshBasicMaterial,
+		LineSegments,
+		EdgesGeometry,
+	} from "three";
 
-	import { Three } from '@threlte/core';
-	import { GLTF, useGltfAnimations } from '@threlte/extras';
-	import { BoxBufferGeometry } from 'three';
+	import { Three } from "@threlte/core";
+	import { GLTF, useGltfAnimations } from "@threlte/extras";
+	import { BoxBufferGeometry } from "three";
 
-	import { OrbitControls , Mesh} from '@threlte/core';
-	import { BoxGeometry } from 'three';
-	import { onMount } from 'svelte';
+	import { OrbitControls, Mesh } from "@threlte/core";
+	import { BoxGeometry } from "three";
+	import { onMount } from "svelte";
 
-	let currentActionKey = 'idle';
+	let currentActionKey = "idle";
 
 	const { gltf, actions } = useGltfAnimations(({ actions }) => {
 		// Uncomment to see all the different possible action keys
@@ -18,14 +24,108 @@
 		actions[currentActionKey]?.play();
 	});
 
-    export let gameId;
-
+	export let gameId;
 
 	let moveIndex = 0;
 	export let moves;
 	let boardState = [];
 	let positions = [];
 	let loaded = false;
+
+	let gp;
+
+	let interval;
+	window.addEventListener("gamepadconnected", (e) => {
+		console.log(
+			"Gamepad connected at index %d: %s. %d buttons, %d axes.",
+			e.gamepad.index,
+			e.gamepad.id,
+			e.gamepad.buttons.length,
+			e.gamepad.axes.length
+		);
+		gp = navigator.getGamepads()[e.gamepad.index];
+
+		pollGamepads();
+
+		console.log(gp.buttons);
+	});
+
+	let selectedX = 2;
+	let selectedY = 2;
+
+	let lastPress;
+	function pollGamepads() {
+		requestAnimationFrame(pollGamepads);
+		gp = navigator.getGamepads()[0];
+		if (gp.buttons[0].pressed) {
+			lastPress = 0;
+		}
+
+		if (gp.buttons[15].pressed) {
+			lastPress = 15;
+		}
+		if (gp.buttons[14].pressed) {
+			lastPress = 14;
+		}
+
+		if (gp.buttons[12].pressed) {
+			lastPress = 12;
+		}
+		if (gp.buttons[13].pressed) {
+			lastPress = 13;
+		}
+
+		if (!gp.buttons[0].pressed && lastPress == 0) {
+			lastPress = null;
+			pressX();
+			console.log("press x");
+		}
+		if (!gp.buttons[15].pressed && lastPress == 15) {
+			lastPress = null;
+			console.log("press right");
+			moveRight()
+		}
+		if (!gp.buttons[14].pressed && lastPress == 14) {
+			lastPress = null;
+			console.log("press left");
+			moveLeft()
+		}
+		if (!gp.buttons[12].pressed && lastPress == 12) {
+			lastPress = null;
+			console.log("press up");
+			moveUp()
+		}
+		if (!gp.buttons[13].pressed && lastPress == 13) {
+			lastPress = null;
+			console.log("press down");
+			moveDown()
+		}
+
+	}
+
+	function moveDown() {
+		selectedY += 1;
+		boardState = boardState;
+	}
+
+	function moveUp() {
+		selectedY -= 1;
+		boardState = boardState;
+	}
+
+	function moveLeft() {
+		selectedX -= 1;
+		boardState = boardState;
+	}
+
+	function moveRight() {
+		selectedX += 1;
+		boardState = boardState;
+	}
+
+	function pressX() {
+		onClick(selectedY, selectedX)
+	}
 
 	onMount(() => {
 		initBoard();
@@ -35,37 +135,37 @@
 	function createInitial(color) {
 		let initialRow = [
 			{
-				type: 'rook',
-				color
+				type: "rook",
+				color,
 			},
 			{
-				type: 'knight',
-				color
+				type: "knight",
+				color,
 			},
 			{
-				type: 'bishop',
-				color
+				type: "bishop",
+				color,
 			},
 			{
-				type: 'king',
-				color
+				type: "king",
+				color,
 			},
 			{
-				type: 'queen',
-				color
+				type: "queen",
+				color,
 			},
 			{
-				type: 'bishop',
-				color
+				type: "bishop",
+				color,
 			},
 			{
-				type: 'knight',
-				color
+				type: "knight",
+				color,
 			},
 			{
-				type: 'rook',
-				color
-			}
+				type: "rook",
+				color,
+			},
 		];
 		return initialRow;
 	}
@@ -74,8 +174,8 @@
 
 		for (let i = 0; i < 8; i++) {
 			pawnRow.push({
-				type: 'pawn',
-				color
+				type: "pawn",
+				color,
 			});
 		}
 		return pawnRow;
@@ -85,7 +185,7 @@
 
 		for (let i = 0; i < 8; i++) {
 			pawnRow.push({
-				type: null
+				type: null,
 			});
 		}
 		return pawnRow;
@@ -95,20 +195,20 @@
 
 		for (let i = 0; i < 8; i++) {
 			nullRow.push({
-				type: null
+				type: null,
 			});
 		}
 
-		boardState[0] = createInitial('black');
-		boardState[1] = createPawnRow('black');
+		boardState[0] = createInitial("black");
+		boardState[1] = createPawnRow("black");
 		boardState[2] = createNullRow();
 		boardState[3] = createNullRow();
 		boardState[4] = createNullRow();
 		boardState[5] = createNullRow();
-		boardState[6] = createPawnRow('white');
-		boardState[7] = createInitial('white');
+		boardState[6] = createPawnRow("white");
+		boardState[7] = createInitial("white");
 
-		console.log('state', boardState[7][7]);
+		console.log("state", boardState[7][7]);
 		boardState = boardState;
 		positions = positions;
 
@@ -121,15 +221,15 @@
 
 	function getColor(x, y) {
 		if (x % 2 == 0) {
-			return y % 2 == 0 ? '#AF8E1A' : '#ECCF69';
+			return y % 2 == 0 ? "#AF8E1A" : "#ECCF69";
 		} else {
-			return y % 2 == 0 ? '#ECCF69' : '#AF8E1A';
+			return y % 2 == 0 ? "#ECCF69" : "#AF8E1A";
 		}
 	}
 	function renderMoves() {
 		if (moves) {
-			console.log('yo', moves);
-			let movesSplit = moves.split(' ');
+			console.log("yo", moves);
+			let movesSplit = moves.split(" ");
 			movesSplit.forEach((move) => {
 				let pos1 = move.substring(0, 2);
 				let pos2 = move.substring(2, 4);
@@ -141,7 +241,7 @@
 
 	function renderMove() {
 		if (moves && loaded) {
-			let movesSplit = moves.split(' ');
+			let movesSplit = moves.split(" ");
 			let newMove = movesSplit[movesSplit.length - 1];
 
 			let pos1 = newMove.substring(0, 2);
@@ -156,10 +256,10 @@
 
 		let copyPiece = boardState[from.y][from.x];
 
-        console.log("Piece", copyPiece)
+		console.log("Piece", copyPiece);
 		boardState[to.y][to.x] = {
 			type: copyPiece.type,
-			color: copyPiece.color
+			color: copyPiece.color,
 		};
 		boardState[from.y][from.x].type = null;
 		boardState[from.y][from.x].color = null;
@@ -167,9 +267,9 @@
 		boardState = boardState;
 	}
 
-    function toPos(y,x) {
-        let letterNumber = '';
-        if (x == 0) {
+	function toPos(y, x) {
+		let letterNumber = "";
+		if (x == 0) {
 			letterNumber = "a";
 		}
 		if (x == 1) {
@@ -193,79 +293,86 @@
 		if (x == 7) {
 			letterNumber = "h";
 		}
-        return `${letterNumber}${8-y}`
-    }
+		return `${letterNumber}${8 - y}`;
+	}
 	function toXY(pos) {
 		let letter = pos.substring(0, 1);
 		let number = pos.substring(1, 2);
 
 		let letterNumber;
-		if (letter == 'a') {
+		if (letter == "a") {
 			letterNumber = 0;
 		}
-		if (letter == 'b') {
+		if (letter == "b") {
 			letterNumber = 1;
 		}
-		if (letter == 'c') {
+		if (letter == "c") {
 			letterNumber = 2;
 		}
-		if (letter == 'd') {
+		if (letter == "d") {
 			letterNumber = 3;
 		}
-		if (letter == 'e') {
+		if (letter == "e") {
 			letterNumber = 4;
 		}
-		if (letter == 'f') {
+		if (letter == "f") {
 			letterNumber = 5;
 		}
-		if (letter == 'g') {
+		if (letter == "g") {
 			letterNumber = 6;
 		}
-		if (letter == 'h') {
+		if (letter == "h") {
 			letterNumber = 7;
 		}
 		return {
 			x: letterNumber,
-			y: 8-number 
+			y: 8 - number,
 		};
 	}
 
 	let picked;
-	function onClick(y,x) {
+	function onClick(y, x) {
 		console.log(picked, boardState[y][x].type);
 		if (!picked && boardState[y][x].type) {
-			console.log('jufjsjfii');
+			console.log("jufjsjfii");
 			picked = {
 				x,
-				y
+				y,
 			};
 		} else if (picked) {
-			console.log('moving', picked, x, y);
+			console.log("moving", picked, x, y);
 
-            let first = toPos(picked.y,picked.x)
-            let second = toPos(y,x);
+			let first = toPos(picked.y, picked.x);
+			let second = toPos(y, x);
 
-            makeMove(`${first}${second}`);
+			makeMove(`${first}${second}`);
 
-            picked = null;
+			picked = null;
 		}
 	}
 
-    async function makeMove(move) {
-        await fetch(`https://lichess.org/api/board/game/${gameId}/move/${move}`,
-        {
-            method:"POST",
-            headers: {
-				Authorization: `Bearer lip_YsEt7QZd8auxRbXTTs54`
-            }
-        })
-
-    }
+	async function makeMove(move) {
+		await fetch(
+			`https://lichess.org/api/board/game/${gameId}/move/${move}`,
+			{
+				method: "POST",
+				headers: {
+					Authorization: `Bearer lip_YsEt7QZd8auxRbXTTs54`,
+				},
+			}
+		);
+	}
 
 	$: moves, renderMove();
 </script>
 
-<Three type={PerspectiveCamera} makeDefault position={[0, 10, 20]} fov={36} target={[0, 0, 0]}>
+<Three
+	type={PerspectiveCamera}
+	makeDefault
+	position={[0, 10, 20]}
+	fov={36}
+	target={[0, 0, 0]}
+>
 	<OrbitControls />
 </Three>
 
@@ -281,6 +388,25 @@
 				interactive
 				on:change={() => onClick(y, x)}
 			>
+				{#if x == selectedX && y == selectedY}
+					<Mesh
+					position={{ y: 2 }}
+
+						geometry={new BoxGeometry(1, 1, 1)}
+						material={new MeshBasicMaterial({ color: "red" })}
+						}
+					/>
+				{/if}
+				{#if picked && x == picked.x && y == picked.y}
+				<Mesh
+				position={{ y: 2 }}
+
+					geometry={new BoxGeometry(1, 1, 1)}
+					material={new MeshBasicMaterial({ color: "green" })}
+					}
+				/>
+			{/if}
+
 				<Mesh
 					position={{ y: 1 }}
 					geometry={new BoxGeometry(1, 2, 1)}
@@ -288,65 +414,97 @@
 					interactive
 					on:click={() => onClick(y, x)}
 				/>
-
-	
 			</Three>
 			<Three type={Group} position={[x - 3.5, 0, y - 3.5]} }>
-				{#if boardState[y][x].type == 'pawn'}
+				{#if boardState[y][x].type == "pawn"}
 					<GLTF
-						url={boardState[y][x].color == 'white' ? 'lego_stormtrooper.glb' : 'explorer.glb'}
+						url={boardState[y][x].color == "white"
+							? "lego_stormtrooper.glb"
+							: "explorer.glb"}
 						interactive
-						position={boardState[y][x].color == 'white' ? { y: 0.1 } : { y: 0.6, x: 0.1, z: -0.2 }}
-						scale={boardState[y][x].color == 'white' ? 0.025 : 0.3}
-						rotation={boardState[y][x].color == 'white' ? { y: 3 } : { y: 0 }}
+						position={boardState[y][x].color == "white"
+							? { y: 0.1 }
+							: { y: 0.6, x: 0.1, z: -0.2 }}
+						scale={boardState[y][x].color == "white" ? 0.025 : 0.3}
+						rotation={boardState[y][x].color == "white"
+							? { y: 3 }
+							: { y: 0 }}
 						on:click={() => onClick(y, x)}
 						}
 					/>
-				{:else if boardState[y][x].type == 'knight'}
+				{:else if boardState[y][x].type == "knight"}
 					<GLTF
-						url={boardState[y][x].color == 'white' ? 'star_wars_knight.glb' : 'bb8_droid.glb'}
+						url={boardState[y][x].color == "white"
+							? "star_wars_knight.glb"
+							: "bb8_droid.glb"}
 						interactive
 						position="{{ y: 0, z: -0.4 }},"
-						rotation={boardState[y][x].color == 'white' ? { y: 3 } : { y: 0 }}
-						scale={boardState[y][x].color == 'white' ? 1.5 : 0.1}
+						rotation={boardState[y][x].color == "white"
+							? { y: 3 }
+							: { y: 0 }}
+						scale={boardState[y][x].color == "white" ? 1.5 : 0.1}
 						on:click={() => onClick(y, x)}
 					/>
-				{:else if boardState[y][x].type == 'rook'}
+				{:else if boardState[y][x].type == "rook"}
 					<GLTF
-						url={boardState[y][x].color == 'white' ? 'star_wars_rook.glb' : 'black_r2d2.glb'}
+						url={boardState[y][x].color == "white"
+							? "star_wars_rook.glb"
+							: "black_r2d2.glb"}
 						interactive
-						position={boardState[y][x].color == 'white' ? { y: -0.5, x: 7, z: 3.5 } : { y: 0.5 }}
-						rotation={boardState[y][x].color == 'white' ? { y: 4.45 } : { y: 0 }}
-						scale={boardState[y][x].color == 'white' ? 2 : 1}
+						position={boardState[y][x].color == "white"
+							? { y: -0.5, x: 7, z: 3.5 }
+							: { y: 0.5 }}
+						rotation={boardState[y][x].color == "white"
+							? { y: 4.45 }
+							: { y: 0 }}
+						scale={boardState[y][x].color == "white" ? 2 : 1}
 						on:click={() => onClick(y, x)}
 					/>
-				{:else if boardState[y][x].type == 'queen'}
+				{:else if boardState[y][x].type == "queen"}
 					<GLTF
-						url={boardState[y][x].color == 'white' ? 'darth_vader.glb' : 'yoda.glb'}
+						url={boardState[y][x].color == "white"
+							? "darth_vader.glb"
+							: "yoda.glb"}
 						interactive
-						rotation={boardState[y][x].color == 'white' ? { y: 3 } : { y: 0 }}
-						position={boardState[y][x].color == 'white' ? { y: 0.1 } : { y: 0.5 }}
-						scale={boardState[y][x].color == 'white' ? 0.04 : 0.35}
+						rotation={boardState[y][x].color == "white"
+							? { y: 3 }
+							: { y: 0 }}
+						position={boardState[y][x].color == "white"
+							? { y: 0.1 }
+							: { y: 0.5 }}
+						scale={boardState[y][x].color == "white" ? 0.04 : 0.35}
 						on:click={() => onClick(y, x)}
 					/>
-				{:else if boardState[y][x].type == 'bishop'}
+				{:else if boardState[y][x].type == "bishop"}
 					<GLTF
-						url={boardState[y][x].color == 'white'
-							? 'star_wars_black_bishop.glb'
-							: 'star_fighter.glb'}
+						url={boardState[y][x].color == "white"
+							? "star_wars_black_bishop.glb"
+							: "star_fighter.glb"}
 						interactive
-						rotation={boardState[y][x].color == 'white' ? { y: 3 } : { y: 0 }}
-						position={boardState[y][x].color == 'white' ? { y: 1 } : { y: 0.5 }}
-						scale={boardState[y][x].color == 'white' ? 0.11 : 0.0025}
+						rotation={boardState[y][x].color == "white"
+							? { y: 3 }
+							: { y: 0 }}
+						position={boardState[y][x].color == "white"
+							? { y: 1 }
+							: { y: 0.5 }}
+						scale={boardState[y][x].color == "white"
+							? 0.11
+							: 0.0025}
 						on:click={() => onClick(y, x)}
 					/>
-				{:else if boardState[y][x].type == 'king'}
+				{:else if boardState[y][x].type == "king"}
 					<GLTF
-						url={boardState[y][x].color == 'white' ? 'star_wars_king.glb' : 'millenium.glb'}
+						url={boardState[y][x].color == "white"
+							? "star_wars_king.glb"
+							: "millenium.glb"}
 						interactive
-						rotation={boardState[y][x].color == 'white' ? { y: 3 } : { y: 0 }}
-						position={boardState[y][x].color == 'white' ? { y: -3.5, x: 13.8, z: -7 } : { y: 0.5 }}
-						scale={boardState[y][x].color == 'white' ? 1 : 0.0012}
+						rotation={boardState[y][x].color == "white"
+							? { y: 3 }
+							: { y: 0 }}
+						position={boardState[y][x].color == "white"
+							? { y: -3.5, x: 13.8, z: -7 }
+							: { y: 0.5 }}
+						scale={boardState[y][x].color == "white" ? 1 : 0.0012}
 						on:click={() => onClick(y, x)}
 					/>
 				{/if}

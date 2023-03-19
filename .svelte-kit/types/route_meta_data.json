@@ -1,0 +1,10 @@
+{
+	"/": [
+		"src/routes/+layout.ts",
+		"src/routes/+layout.ts"
+	],
+	"/[gameId]": [
+		"src/routes/[gameId]/+page.server.js",
+		"src/routes/+layout.ts"
+	]
+}
