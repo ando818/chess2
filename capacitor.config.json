@@ -1,0 +1,14 @@
+{
+	"webDir":"build",
+	"appId":"chess.ionic.io",
+	"appName":"chess",
+	"_server": {
+		"url": "https://lichess.org/",
+		"cleartext": true
+	  },
+	  "server": {
+		  "allowNavigation": [
+			"https://lichess.org/"
+		  ]
+		}
+}

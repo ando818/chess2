@@ -1,0 +1,44 @@
+{
+	"name": "chess",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"dev": "vite dev --host",
+		"build": "vite build",
+		"preview": "vite preview",
+		"test": "playwright test",
+		"lint": "prettier --plugin-search-dir . --check . && eslint .",
+		"format": "prettier --plugin-search-dir . --write ."
+	},
+	"devDependencies": {
+		"@capacitor/cli": "^4.7.1",
+		"@dimforge/rapier3d-compat": "^0.11.2",
+		"@playwright/test": "^1.28.1",
+		"@sveltejs/adapter-static": "^2.0.1",
+		"@sveltejs/kit": "^1.5.0",
+		"@threlte/core": "^5.0.9",
+		"@threlte/extras": "^4.9.3",
+		"@threlte/preprocess": "^0.0.2",
+		"@threlte/rapier": "^0.5.0",
+		"@types/three": "^0.149.0",
+		"eslint": "^8.28.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-svelte3": "^4.0.0",
+		"prettier": "^2.8.0",
+		"prettier-plugin-svelte": "^2.8.1",
+		"svelte": "^3.54.0",
+		"svelte-preprocess": "^5.0.3",
+		"svelte-sequential-preprocessor": "^1.0.0",
+		"three": "^0.150.1",
+		"vite": "^4.0.0"
+	},
+	"type": "module",
+	"dependencies": {
+		"@capacitor/core": "^4.7.1",
+		"@ionic/core": "^6.6.0",
+		"@tweakpane/core": "^1.1.6",
+		"ionic-svelte": "^0.5.72",
+		"ionicons": "^7.0.0",
+		"tweakpane": "^3.1.7"
+	}
+}
