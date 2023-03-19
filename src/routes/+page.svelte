@@ -194,6 +194,8 @@
 
 <div use:action />
 
+{#if loaded}
+
 <Canvas linear flat>
 	<LightInstance {light} intensity={5} position={{ x: 0, y: 10 }} />
 	<LightInstance {light} intensity={2} position={{ z: 10, y: 20 }} />
@@ -202,7 +204,6 @@
 	/>
 
 	<!-- Example scene with boxes -->
-	{#if loaded}
 		<Scene {gameId} {moves} />
-	{/if}
 </Canvas>
+{/if}
