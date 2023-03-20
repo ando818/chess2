@@ -1,0 +1,337 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 1689,
+      "max": [
+        0.017140226438641548,
+        0.0640285536646843,
+        0.014999999664723873
+      ],
+      "min": [
+        -0.02006351202726364,
+        0.0,
+        -0.014999999664723873
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 20268,
+      "componentType": 5126,
+      "count": 1689,
+      "max": [
+        0.9991831183433533,
+        0.9999197721481323,
+        0.9997761249542236
+      ],
+      "min": [
+        -0.9982971549034119,
+        -0.9999874234199524,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 1689,
+      "max": [
+        0.9842486381530762,
+        1.0
+      ],
+      "min": [
+        0.0,
+        0.008514940738677979
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 2694,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 40536,
+      "componentType": 5126,
+      "count": 1689,
+      "max": [
+        0.017140226438641548,
+        0.0640285536646843,
+        0.014999999664723873
+      ],
+      "min": [
+        -0.02006351202726364,
+        0.0,
+        -0.014999999664723873
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 60804,
+      "componentType": 5126,
+      "count": 1689,
+      "max": [
+        0.9991831183433533,
+        0.9999197721481323,
+        0.9997761249542236
+      ],
+      "min": [
+        -0.9982971549034119,
+        -0.9999874234199524,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 13512,
+      "componentType": 5126,
+      "count": 1689,
+      "max": [
+        0.9842486381530762,
+        1.0
+      ],
+      "min": [
+        0.0,
+        0.008514940738677979
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 10776,
+      "componentType": 5125,
+      "count": 2694,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "danielpaulse (https://sketchfab.com/danielpaulse)",
+      "license": "CC-BY-SA-4.0 (http://creativecommons.org/licenses/by-sa/4.0/)",
+      "source": "https://sketchfab.com/3d-models/chess-piece-knight-736236d00cfe4cb9a88bee6b4c833e41",
+      "title": "Chess Piece - Knight"
+    },
+    "generator": "Sketchfab-12.68.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 21552,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 27024,
+      "byteOffset": 21552,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 81072,
+      "byteOffset": 48576,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 129648,
+      "uri": "whitekit.bin"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "White_Square",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.882937,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "metallicFactor": 0.65,
+        "roughnessFactor": 0.15
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "Black_Square",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.00762073,
+          0.00560855,
+          0.00803688,
+          1.0
+        ],
+        "metallicFactor": 0.875,
+        "roughnessFactor": 0.15
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Object_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TEXCOORD_0": 2
+          },
+          "indices": 3,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Object_1",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 5,
+            "POSITION": 4,
+            "TEXCOORD_0": 6
+          },
+          "indices": 7,
+          "material": 1,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        -1.0,
+        0.0,
+        0.0,
+        1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "name": "root"
+    },
+    {
+      "children": [
+        3,
+        5
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "GLTF_SceneRootNode"
+    },
+    {
+      "children": [
+        4
+      ],
+      "matrix": [
+        1.0345715284347534,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0345715284347534,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0345715284347534,
+        0.0,
+        0.025364607572555542,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Knight_0"
+    },
+    {
+      "mesh": 0,
+      "name": "Object_4"
+    },
+    {
+      "children": [
+        6
+      ],
+      "matrix": [
+        1.0345715284347534,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0345715284347534,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0345715284347534,
+        0.0,
+        -0.02217581495642662,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Knight.001_1"
+    },
+    {
+      "mesh": 1,
+      "name": "Object_6"
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ]
+}

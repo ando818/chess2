@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { useTweakpane } from "../useTweakpane";
-	import { Canvas, Mesh } from "@threlte/core";
+	import { Canvas, Mesh, Object3DInstance } from "@threlte/core";
 	import { Grid } from "@threlte/extras";
 	import Scene from "../Scene.svelte";
 	import { GLTF } from "@threlte/extras";
@@ -11,22 +11,26 @@
 	import { DirectionalLight, SpotLight } from "three";
 	import { BoxBufferGeometry, MeshBasicMaterial } from "three";
 	import { BoxGeometry } from "three";
-
-
-
-    requestAnimationFrame(update);
-  };
+	import { useGltf } from "@threlte/extras";
+	import * as crypto from "crypto";
+	import { authToken} from '$lib/store.js'
 
 	let loaded = false;
 	export let data;
 	let gameId = data.gameId;
+
+
+	const urlParams = new URLSearchParams(window.location.search);
+
 	onMount(async () => {
 		
+		console.log($authToken)
+		getOauthCode()
 		const stream = fetch(
 			`https://lichess.org/api/board/game/stream/${gameId}`,
 			{
 				headers: {
-					Authorization: `Bearer lip_YsEt7QZd8auxRbXTTs54`,
+					Authorization: `Bearer ${$authToken}`,
 				},
 			}
 		);
@@ -36,6 +40,9 @@
 
 		stream.then(readStream(readResponse));
 	});
+
+	async function getOauthCode() {
+	}
 
 	let moves = "";
 	function readResponse(response) {
@@ -53,8 +60,8 @@
 		title: "Grid",
 		expanded: false,
 	});
-	var light = new SpotLight(0xdad6c7);
-	var light2 = new SpotLight(0xdad6c7);
+	var light = new SpotLight(0xffffff);
+	var light2 = new SpotLight(0xffffff);
 
 	const cellFolder = pane.addFolder({
 		title: "Cell settings",
@@ -197,11 +204,18 @@
 <div use:action />
 
 <Canvas linear flat>
-	<LightInstance {light} intensity={5} position={{ x: 0, y: 10 }} />
-	<LightInstance {light} intensity={2} position={{ z: 10, y: 20 }} />
-	<LightInstance light={light2} intensity={2} position={{ z: -10, y: 20 }} />
+	<LightInstance {light} intensity={1.2} position={{ z: 10, y: 10, x: 0 }} />
+	<LightInstance
+		light={light2}
+		intensity={1.5}
+		position={{ z: -10, y: 30, x: 0 }}
+	/>
 
 	/>
+
+	<GLTF url="grass.glb" position={{ y: -9.6 }} scale={5} />
+
+	<GLTF url="picnic_table.glb" position={{ y: -9.6 }} scale={17} />
 
 	<!-- Example scene with boxes -->
 	{#if loaded}

@@ -32,13 +32,21 @@
 		"three": "^0.150.1",
 		"vite": "^4.0.0"
 	},
+	"browser": {
+		"crypto": false
+	},
 	"type": "module",
 	"dependencies": {
 		"@capacitor/core": "^4.7.1",
 		"@ionic/core": "^6.6.0",
 		"@tweakpane/core": "^1.1.6",
+		"base64-arraybuffer": "^1.0.2",
+		"base64url": "^3.0.1",
+		"crypto": "^1.0.1",
+		"crypto.js": "^3.1.0",
 		"ionic-svelte": "^0.5.72",
 		"ionicons": "^7.0.0",
+		"randomstring": "^1.2.3",
 		"tweakpane": "^3.1.7"
 	}
 }

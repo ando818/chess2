@@ -6,23 +6,17 @@
 		LineSegments,
 		EdgesGeometry,
 	} from "three";
-
+	import { PositionalAudio, AudioListener, Audio } from "@threlte/core";
 	import { Three } from "@threlte/core";
 	import { GLTF, useGltfAnimations } from "@threlte/extras";
 	import { BoxBufferGeometry } from "three";
-
-	import { OrbitControls, Mesh } from "@threlte/core";
+	import { Object3D } from "@threlte/core";
+	import { OrbitControls, Mesh, Object3DInstance } from "@threlte/core";
 	import { BoxGeometry } from "three";
 	import { onMount } from "svelte";
-
+	import { useGltf } from "@threlte/extras";
+	import {authToken} from '$lib/store'
 	let currentActionKey = "idle";
-
-	const { gltf, actions } = useGltfAnimations(({ actions }) => {
-		// Uncomment to see all the different possible action keys
-		// console.log(actions);
-		// set the initial animation
-		actions[currentActionKey]?.play();
-	});
 
 	export let gameId;
 
@@ -33,6 +27,7 @@
 	let loaded = false;
 
 	let gp;
+	const { gltf } = useGltf("pieces.glb");
 
 	let interval;
 	window.addEventListener("gamepadconnected", (e) => {
@@ -49,6 +44,10 @@
 
 		console.log(gp.buttons);
 	});
+
+	setTimeout(() => {
+		console.log($gltf);
+	}, 3000);
 
 	let selectedX = 2;
 	let selectedY = 2;
@@ -83,24 +82,23 @@
 		if (!gp.buttons[15].pressed && lastPress == 15) {
 			lastPress = null;
 			console.log("press right");
-			moveRight()
+			moveRight();
 		}
 		if (!gp.buttons[14].pressed && lastPress == 14) {
 			lastPress = null;
 			console.log("press left");
-			moveLeft()
+			moveLeft();
 		}
 		if (!gp.buttons[12].pressed && lastPress == 12) {
 			lastPress = null;
 			console.log("press up");
-			moveUp()
+			moveUp();
 		}
 		if (!gp.buttons[13].pressed && lastPress == 13) {
 			lastPress = null;
 			console.log("press down");
-			moveDown()
+			moveDown();
 		}
-
 	}
 
 	function moveDown() {
@@ -124,10 +122,12 @@
 	}
 
 	function pressX() {
-		onClick(selectedY, selectedX)
+		onClick(selectedY, selectedX);
 	}
 
 	onMount(() => {
+		play = true;
+
 		initBoard();
 		boardState = boardState;
 	});
@@ -212,7 +212,7 @@
 		boardState = boardState;
 		positions = positions;
 
-		renderMoves();
+		renderMoves(false);
 
 		loaded = true;
 	}
@@ -221,12 +221,12 @@
 
 	function getColor(x, y) {
 		if (x % 2 == 0) {
-			return y % 2 == 0 ? "#AF8E1A" : "#ECCF69";
+			return y % 2 == 0 ? "#B06537" : "#EFB591";
 		} else {
-			return y % 2 == 0 ? "#ECCF69" : "#AF8E1A";
+			return y % 2 == 0 ? "#EFB591" : "#B06537";
 		}
 	}
-	function renderMoves() {
+	function renderMoves(playSound) {
 		if (moves) {
 			console.log("yo", moves);
 			let movesSplit = moves.split(" ");
@@ -234,7 +234,7 @@
 				let pos1 = move.substring(0, 2);
 				let pos2 = move.substring(2, 4);
 
-				movePiece(toXY(pos1), toXY(pos2));
+				movePiece(toXY(pos1), toXY(pos2),playSound);
 			});
 		}
 	}
@@ -247,11 +247,11 @@
 			let pos1 = newMove.substring(0, 2);
 			let pos2 = newMove.substring(2, 4);
 
-			movePiece(toXY(pos1), toXY(pos2));
+			movePiece(toXY(pos1), toXY(pos2), true);
 		}
 	}
 
-	function movePiece(from, to) {
+	function movePiece(from, to, playSound) {
 		let pieceMoving = boardState[from.y][from.x];
 
 		let copyPiece = boardState[from.y][from.x];
@@ -263,6 +263,10 @@
 		};
 		boardState[from.y][from.x].type = null;
 		boardState[from.y][from.x].color = null;
+
+		if (playSound) {
+		play();
+		}
 
 		boardState = boardState;
 	}
@@ -332,7 +336,6 @@
 
 	let picked;
 	function onClick(y, x) {
-		console.log(picked, boardState[y][x].type);
 		if (!picked && boardState[y][x].type) {
 			console.log("jufjsjfii");
 			picked = {
@@ -352,163 +355,210 @@
 	}
 
 	async function makeMove(move) {
-		await fetch(
+		let resp = await fetch(
 			`https://lichess.org/api/board/game/${gameId}/move/${move}`,
 			{
 				method: "POST",
 				headers: {
-					Authorization: `Bearer lip_YsEt7QZd8auxRbXTTs54`,
+					Authorization: `Bearer ${$authToken}`,
 				},
 			}
 		);
+		if (resp.ok) {
+			play();
+		}
 	}
 
 	$: moves, renderMove();
+
+	let audio;
+	let map = {
+		bishop: {
+			white: "Object002_02_-_Default_0",
+			black: "Object043_03_-_Default_0",
+		},
+		pawn: {
+			white: "Object004_02_-_Default_0",
+			black: "Object050_03_-_Default_0",
+		},
+		knight: {
+			white: "Cylinder004_02_-_Default_0",
+			black: "Cylinder005_03_-_Default_0",
+		},
+		king: {
+			white: "Object006_02_-_Default_0",
+			black: "Object046_03_-_Default_0",
+		},
+		rook: {
+			white: "Object034_02_-_Default_0",
+			black: "Object047_03_-_Default_0",
+		},
+		queen: {
+			white: "Object005_02_-_Default_0",
+			black: "Object046_03_-_Default_0",
+		},
+	};
+
+	function playaudio() {
+		console.log('jij')
+	}
+
+	let play = false;
 </script>
 
 <Three
 	type={PerspectiveCamera}
 	makeDefault
-	position={[0, 10, 20]}
+	position={[-10, 20, 10]}
 	fov={36}
 	target={[0, 0, 0]}
 >
+	<AudioListener id="ear" />
+
 	<OrbitControls />
 </Three>
 
 <!-- Make a box in every second cell to show aligment -->
 
-{#if loaded}
-	{#each { length: 8 } as h, x}
-		{#each { length: 8 } as v, y}
-			<Three
-				type={Group}
-				position={[x - 3.5, 0, y - 3.5]}
-				scale={[1, 0.1, 1]}
-				interactive
-				on:change={() => onClick(y, x)}
-			>
-				{#if x == selectedX && y == selectedY}
-					<Mesh
-					position={{ y: 2 }}
+<Three type={Group} position={[0, 3.8, 0]}>
 
-						geometry={new BoxGeometry(1, 1, 1)}
-						material={new MeshBasicMaterial({ color: "red" })}
-						}
-					/>
-				{/if}
-				{#if picked && x == picked.x && y == picked.y}
-				<Mesh
-				position={{ y: 2 }}
+	{#if $gltf}<Object3DInstance
+			object={$gltf.nodes["Object030_01_-_Default_0"]}
+			scale={{ y: 0.043, z: 0.043, x: 0.043 }}
+			position={{ y: 0 }}
+			rotation={{ x: 1.55, y: 3.15 }}
+		/>
+	{/if}
+	{#if loaded}
+	<Audio  autoplay loop id="ear" source={"birds.mp3"}/>
+	<Audio  id="ear" source={"move-self.mp3"} bind:this={audio} bind:play={play}/>
 
-					geometry={new BoxGeometry(1, 1, 1)}
-					material={new MeshBasicMaterial({ color: "green" })}
-					}
-				/>
-			{/if}
-
-				<Mesh
-					position={{ y: 1 }}
-					geometry={new BoxGeometry(1, 2, 1)}
-					material={new MeshBasicMaterial({ color: getColor(x, y) })}
+		{#each { length: 8 } as h, x}
+			{#each { length: 8 } as v, y}
+				<Three
+					type={Group}
+					position={[x - 3.5, 0, y - 3.5]}
+					scale={[1, 0.1, 1]}
 					interactive
-					on:click={() => onClick(y, x)}
-				/>
-			</Three>
-			<Three type={Group} position={[x - 3.5, 0, y - 3.5]} }>
-				{#if boardState[y][x].type == "pawn"}
-					<GLTF
-						url={boardState[y][x].color == "white"
-							? "lego_stormtrooper.glb"
-							: "explorer.glb"}
+					on:change={() => onClick(y, x)}
+				>
+					{#if x == selectedX && y == selectedY && 5<3}
+						<Mesh
+							position={{ y: 2 }}
+							geometry={new BoxGeometry(1, 1, 1)}
+							material={new MeshBasicMaterial({ color: "red" })}
+						/>
+					{/if}
+					{#if picked && x == picked.x && y == picked.y}
+						<Mesh
+							position={{ y: 2 }}
+							geometry={new BoxGeometry(1, 1, 1)}
+							material={new MeshBasicMaterial({ color: "green" })}
+							}
+						/>
+					{/if}
+
+					<Mesh
+						position={{ y: 1 }}
+						geometry={new BoxGeometry(1, 2, 1)}
+						material={new MeshBasicMaterial({
+							color: getColor(x, y),
+						})}
 						interactive
-						position={boardState[y][x].color == "white"
-							? { y: 0.1 }
-							: { y: 0.6, x: 0.1, z: -0.2 }}
-						scale={boardState[y][x].color == "white" ? 0.025 : 0.3}
-						rotation={boardState[y][x].color == "white"
-							? { y: 3 }
-							: { y: 0 }}
-						on:click={() => onClick(y, x)}
-						}
-					/>
-				{:else if boardState[y][x].type == "knight"}
-					<GLTF
-						url={boardState[y][x].color == "white"
-							? "star_wars_knight.glb"
-							: "bb8_droid.glb"}
-						interactive
-						position="{{ y: 0, z: -0.4 }},"
-						rotation={boardState[y][x].color == "white"
-							? { y: 3 }
-							: { y: 0 }}
-						scale={boardState[y][x].color == "white" ? 1.5 : 0.1}
 						on:click={() => onClick(y, x)}
 					/>
-				{:else if boardState[y][x].type == "rook"}
-					<GLTF
-						url={boardState[y][x].color == "white"
-							? "star_wars_rook.glb"
-							: "black_r2d2.glb"}
-						interactive
-						position={boardState[y][x].color == "white"
-							? { y: -0.5, x: 7, z: 3.5 }
-							: { y: 0.5 }}
-						rotation={boardState[y][x].color == "white"
-							? { y: 4.45 }
-							: { y: 0 }}
-						scale={boardState[y][x].color == "white" ? 2 : 1}
-						on:click={() => onClick(y, x)}
-					/>
-				{:else if boardState[y][x].type == "queen"}
-					<GLTF
-						url={boardState[y][x].color == "white"
-							? "darth_vader.glb"
-							: "yoda.glb"}
-						interactive
-						rotation={boardState[y][x].color == "white"
-							? { y: 3 }
-							: { y: 0 }}
-						position={boardState[y][x].color == "white"
-							? { y: 0.1 }
-							: { y: 0.5 }}
-						scale={boardState[y][x].color == "white" ? 0.04 : 0.35}
-						on:click={() => onClick(y, x)}
-					/>
-				{:else if boardState[y][x].type == "bishop"}
-					<GLTF
-						url={boardState[y][x].color == "white"
-							? "star_wars_black_bishop.glb"
-							: "star_fighter.glb"}
-						interactive
-						rotation={boardState[y][x].color == "white"
-							? { y: 3 }
-							: { y: 0 }}
-						position={boardState[y][x].color == "white"
-							? { y: 1 }
-							: { y: 0.5 }}
-						scale={boardState[y][x].color == "white"
-							? 0.11
-							: 0.0025}
-						on:click={() => onClick(y, x)}
-					/>
-				{:else if boardState[y][x].type == "king"}
-					<GLTF
-						url={boardState[y][x].color == "white"
-							? "star_wars_king.glb"
-							: "millenium.glb"}
-						interactive
-						rotation={boardState[y][x].color == "white"
-							? { y: 3 }
-							: { y: 0 }}
-						position={boardState[y][x].color == "white"
-							? { y: -3.5, x: 13.8, z: -7 }
-							: { y: 0.5 }}
-						scale={boardState[y][x].color == "white" ? 1 : 0.0012}
-						on:click={() => onClick(y, x)}
-					/>
+				</Three>
+
+				{#if $gltf}
+					<Three type={Group} position={[x - 3.5, 0, y - 3.5]} }>
+						{#if boardState[y][x].type == "pawn"}
+							<Object3DInstance
+								object={$gltf.nodes[
+									map[boardState[y][x].type][
+										boardState[y][x].color
+									]
+								].clone()}
+								rotation={{ x: 4.65 }}
+								position={{ y: 0.1, z: -1.2 }}
+								scale={{ y: 0.035, z: 0.06, x: 0.035 }}
+							/>
+						{:else if boardState[y][x].type == "knight"}
+							<Object3DInstance
+								object={$gltf.nodes[
+									map[boardState[y][x].type][
+										boardState[y][x].color
+									]
+								].clone()}
+								position={{ y: 0.2 }}
+								rotation={boardState[y][x].color == "black"
+									? { x: 4.65, z: 3 }
+									: { x: 4.65, z: 0 }}
+								scale={0.05}
+							/>
+						{:else if boardState[y][x].type == "rook"}
+							<Object3DInstance
+								object={$gltf.nodes[
+									map[boardState[y][x].type][
+										boardState[y][x].color
+									]
+								].clone()}
+								position={boardState[y][x].color == "black"
+									? { y: 0.2, x: 0, z: 0 }
+									: { y: 0.2, x: 0, z: 0 }}
+								rotation={boardState[y][x].color == "black"
+									? { x: 4.65, z: 0 }
+									: { x: 4.65, z: 0 }}
+								scale={{ y: 0.05, z: 0.06, x: 0.05 }}
+							/>
+						{:else if boardState[y][x].type == "queen"}
+							<Object3DInstance
+								object={$gltf.nodes[
+									map[boardState[y][x].type][
+										boardState[y][x].color
+									]
+								].clone()}
+								position={boardState[y][x].color == "black"
+									? { y: 0.1, x: -1, z: -1.5 }
+									: { y: 0.1, x: 0.35, z: -1.5 }}
+								rotation={boardState[y][x].color == "black"
+									? { x: 4.65, z: 0 }
+									: { x: 4.65, z: 0 }}
+								scale={{ y: 0.045, z: 0.06, x: 0.045 }}
+							/>
+						{:else if boardState[y][x].type == "bishop"}
+							<Object3DInstance
+								object={$gltf.nodes[
+									map[boardState[y][x].type][
+										boardState[y][x].color
+									]
+								].clone()}
+								position={boardState[y][x].color == "black"
+									? { y: 0.1, x: 0, z: -1.5 }
+									: { y: 0.1, x: 0, z: -1.5 }}
+								rotation={boardState[y][x].color == "black"
+									? { x: 4.65, z: 0 }
+									: { x: 4.65, z: 0 }}
+								scale={{ y: 0.045, z: 0.06, x: 0.045 }}
+							/>
+						{:else if boardState[y][x].type == "king"}
+							<Object3DInstance
+								object={$gltf.nodes[
+									map[boardState[y][x].type][
+										boardState[y][x].color
+									]
+								].clone()}
+								position={boardState[y][x].color == "black"
+									? { y: 0.1, x: 1, z: -1.7 }
+									: { y: 0.1, x: 1, z: -1.7 }}
+								rotation={boardState[y][x].color == "black"
+									? { x: 4.65, z: 0 }
+									: { x: 4.65, z: 0 }}
+								scale={{ y: 0.05, z: 0.06, x: 0.05 }}
+							/>
+						{/if}
+					</Three>
 				{/if}
-			</Three>
+			{/each}
 		{/each}
-	{/each}
-{/if}
+	{/if}
+</Three>
