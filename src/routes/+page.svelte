@@ -56,6 +56,7 @@
 		stream.then(readStream(readResponse));
 	}
 
+	let finding = false;
 	async function start() {
 		
 		let resp = await fetch("https://lichess.org/api/board/seek", {
@@ -66,6 +67,7 @@
 				Authorization: `Bearer lip_YsEt7QZd8auxRbXTTs54`,
 			},
 		});
+		finding = true;
 	}
 	let moves = "";
 
@@ -81,7 +83,6 @@
 		} else if (response.type == "gameStart") {
 			console.log(startTime);
 			if (response.game.source == "lobby") {
-				console.log("yo started");
 				gameId = response.game.gameId;
 				gameStarted = true;
 				goto("https://createlab.io/"+gameId) 
@@ -94,151 +95,10 @@
 	const trimArr = (arr, start, end) => {
 		return arr.slice(start);
 	};
-
-	const { pane, action, addInput } = useTweakpane({
-		title: "Grid",
-		expanded: false,
-	});
 	var light = new SpotLight(0xdad6c7);
 	var light2 = new SpotLight(0xdad6c7);
 
-	const cellFolder = pane.addFolder({
-		title: "Cell settings",
-	});
-	const cellSize = addInput({
-		label: "Cell size",
-		value: 1,
-		params: {
-			step: 1,
-			min: 1,
-			max: 5,
-		},
-		parent: cellFolder,
-	});
-	const cellColor = addInput({
-		label: "Cell color",
-		value: `#FFFFFF`,
-		parent: cellFolder,
-	});
-
-	const cellThickness = addInput({
-		label: "Cell thickness",
-		value: 1.4,
-		params: {
-			step: 0.1,
-			min: 1,
-		},
-		parent: cellFolder,
-	});
-
-	const sectionFolder = pane.addFolder({
-		title: "Section settings",
-	});
-
-	const sectionSize = addInput({
-		label: "Section size",
-		value: 0,
-		params: {
-			step: 1,
-			min: 1,
-			max: 50,
-		},
-		parent: sectionFolder,
-	});
-	const sectionColor = addInput({
-		label: "Section color",
-		value: `#FFFFFF`,
-		parent: sectionFolder,
-	});
-	const sectionThickness = addInput({
-		label: "Section thickness",
-		value: 2,
-		params: {
-			step: 0.1,
-			min: 1,
-			max: 10,
-		},
-
-		parent: sectionFolder,
-	});
-
-	const generalFolder = pane.addFolder({
-		title: "General settings",
-	});
-
-	const gridSize1 = addInput({
-		label: "Grid size1",
-		value: 8,
-		params: {
-			step: 1,
-			min: 1,
-			max: 100,
-		},
-
-		parent: generalFolder,
-	});
-	const gridSize2 = addInput({
-		label: "Grid size2",
-		value: 8,
-		params: {
-			step: 1,
-			min: 1,
-			max: 100,
-		},
-		parent: generalFolder,
-	});
-
-	const axes = addInput({
-		label: "axes",
-		value: "xzy",
-		params: {
-			options: {
-				xzy: "xzy",
-				xyz: "xyz",
-				zyx: "zyx",
-			},
-		},
-		parent: generalFolder,
-	});
-	$: axisTyped = $axes as "xzy" | "xyz" | "zyx";
-
-	const followCamera = addInput({
-		label: "followCamera",
-		value: false,
-
-		parent: generalFolder,
-	});
-
-	const infiniteGrid = addInput({
-		label: "infiniteGrid",
-		value: false,
-		parent: generalFolder,
-	});
-
-	const fadeDistance = addInput({
-		label: "fadeDistance",
-		value: 100,
-		params: {
-			step: 10,
-			min: 10,
-			max: 400,
-		},
-
-		parent: generalFolder,
-	});
-
-	const fadeStregth = addInput({
-		label: "fadeStregth",
-		value: 1,
-		params: {
-			step: 0.1,
-			min: 0,
-			max: 20,
-		},
-
-		parent: generalFolder,
-	});
-
+	
 	function onClick() {
 		seek();
 	}
@@ -313,7 +173,6 @@
 		console.log($authToken)
 		event();
 		loggedIn = true;
-		console.log(data.access_token)
 
 	}
 	async function login() {
@@ -325,7 +184,6 @@
 	}
 </script>
 
-<div use:action />
 
 {#if loaded}
 	<Canvas linear flat>
@@ -336,7 +194,11 @@
 						on:click={start}
 						class="bg-brand rounded-full px-3 text-white hover:opacity-90 active:opacity-70"
 					>
+					{#if !finding}
 						Find Match
+						{:else}
+						Finding Match...
+					{/if}
 					</button>
 				</HTML>
 			{:else}
