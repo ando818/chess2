@@ -189,7 +189,7 @@
 				<HTML position={{ y: 1.25, z: 1 }} transform>
 					<button
 						on:click={start}
-						on:touchend={start}
+						on:touchstart={start}
 						class="bg-brand rounded-full px-3 text-white hover:opacity-90 active:opacity-70"
 					>
 					{#if !finding}
@@ -225,7 +225,7 @@
 			<HTML position={{ y: 1.25, z: 1 }} transform>
 				<button
 					on:click={login}
-					on:touchend={login}
+					on:touchstart={login}
 
 					class="bg-brand rounded-full px-3 text-white hover:opacity-90 active:opacity-70"
 				>
