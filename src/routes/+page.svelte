@@ -58,6 +58,7 @@
 
 	let finding = false;
 	async function start() {
+		finding = true;
 		
 		let resp = await fetch("https://lichess.org/api/board/seek", {
 			method: "POST",
@@ -67,7 +68,6 @@
 				Authorization: `Bearer lip_YsEt7QZd8auxRbXTTs54`,
 			},
 		});
-		finding = true;
 	}
 	let moves = "";
 
