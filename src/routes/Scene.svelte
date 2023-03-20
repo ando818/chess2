@@ -14,8 +14,8 @@
 	import { OrbitControls, Mesh, Object3DInstance } from "@threlte/core";
 	import { BoxGeometry } from "three";
 	import { onMount } from "svelte";
-	import { useGltf } from "@threlte/extras";
-	import {authToken} from '$lib/store'
+	import { useGltf, ContactShadows } from "@threlte/extras";
+	import { authToken } from "$lib/store";
 	let currentActionKey = "idle";
 
 	export let gameId;
@@ -221,9 +221,9 @@
 
 	function getColor(x, y) {
 		if (x % 2 == 0) {
-			return y % 2 == 0 ? "#B06537" : "#EFB591";
+			return y % 2 == 0 ? "#A76136" : "#632701";
 		} else {
-			return y % 2 == 0 ? "#EFB591" : "#B06537";
+			return y % 2 == 0 ? "#632701" : "#A76136";
 		}
 	}
 	function renderMoves(playSound) {
@@ -234,7 +234,7 @@
 				let pos1 = move.substring(0, 2);
 				let pos2 = move.substring(2, 4);
 
-				movePiece(toXY(pos1), toXY(pos2),playSound);
+				movePiece(toXY(pos1), toXY(pos2), playSound);
 			});
 		}
 	}
@@ -267,7 +267,7 @@
 		boardState[from.y][from.x].color = null;
 
 		if (playSound) {
-		play();
+			play();
 		}
 
 		boardState = boardState;
@@ -338,6 +338,7 @@
 
 	let picked;
 	function onClick(y, x) {
+		console.log("ckicjed");
 		if (!picked && boardState[y][x].type) {
 			console.log("jufjsjfii");
 			picked = {
@@ -402,7 +403,7 @@
 	};
 
 	function playaudio() {
-		console.log('jij')
+		console.log("jij");
 	}
 
 	let play = false;
@@ -411,20 +412,21 @@
 <Three
 	type={PerspectiveCamera}
 	makeDefault
-	position={[20, 15, 4]}
-	rotation={{x:2}}
-	fov={50}
+	position={[30, 40, 40]}
+	rotation={{ x: 2 }}
+	fov={36}
 	target={[10, 10, 10]}
 >
 	<AudioListener id="ear" />
 
 	<OrbitControls />
+
+
 </Three>
 
 <!-- Make a box in every second cell to show aligment -->
 
-<Three type={Group} position={[0, 3.8, 0]}>
-
+<Three type={Group} position={[2.5, 11, 9]} rotation={[0, 1.56, 0]}>
 	{#if $gltf}<Object3DInstance
 			object={$gltf.nodes["Object030_01_-_Default_0"]}
 			scale={{ y: 0.043, z: 0.043, x: 0.043 }}
@@ -433,8 +435,8 @@
 		/>
 	{/if}
 	{#if loaded}
-	<Audio  autoplay loop id="ear" source={"birds.mp3"}/>
-	<Audio  id="ear" source={"move-self.mp3"} bind:this={audio} bind:play={play}/>
+		<Audio autoplay loop id="ear" source={"birds.mp3"} />
+		<Audio id="ear" source={"move-self.mp3"} bind:this={audio} bind:play />
 
 		{#each { length: 8 } as h, x}
 			{#each { length: 8 } as v, y}
@@ -445,7 +447,7 @@
 					interactive
 					on:change={() => onClick(y, x)}
 				>
-					{#if x == selectedX && y == selectedY && 5<3}
+					{#if x == selectedX && y == selectedY && 5 < 3}
 						<Mesh
 							position={{ y: 2 }}
 							geometry={new BoxGeometry(1, 1, 1)}
@@ -473,38 +475,54 @@
 				</Three>
 
 				{#if $gltf}
-					<Three type={Group} position={[x - 3.5, 0, y - 3.5]} }>
+					<Three
+						type={Group}
+						position={[x - 3.5, 0, y - 3.5]}
+					>
 						{#if boardState[y][x].type == "pawn"}
-							<Object3DInstance
-								object={$gltf.nodes[
+							<Mesh
+								geometry={$gltf.nodes[
 									map[boardState[y][x].type][
 										boardState[y][x].color
 									]
-								].clone()}
+								].clone().geometry}
+								material={boardState[y][x].color == "black"
+									? $gltf.materials["03_-_Default"]
+									: $gltf.materials["02_-_Default"]}
 								rotation={{ x: 4.65 }}
 								position={{ y: 0.1, z: -1.55 }}
 								scale={{ y: 0.045, z: 0.08, x: 0.045 }}
+								interactive
+								on:click={() => onClick(y, x)}
 							/>
 						{:else if boardState[y][x].type == "knight"}
-							<Object3DInstance
-								object={$gltf.nodes[
+							<Mesh
+								geometry={$gltf.nodes[
 									map[boardState[y][x].type][
 										boardState[y][x].color
 									]
-								].clone()}
+								].clone().geometry}
+								material={boardState[y][x].color == "black"
+									? $gltf.materials["03_-_Default"]
+									: $gltf.materials["02_-_Default"]}
 								position={{ y: 0.2 }}
 								rotation={boardState[y][x].color == "black"
 									? { x: 4.65, z: 3 }
 									: { x: 4.65, z: 0 }}
-								scale={{y:0.04,z:0.05, x:0.04}}
+								scale={{ y: 0.04, z: 0.05, x: 0.04 }}
+								interactive
+								on:click={() => onClick(y, x)}
 							/>
 						{:else if boardState[y][x].type == "rook"}
-							<Object3DInstance
-								object={$gltf.nodes[
+							<Mesh
+								geometry={$gltf.nodes[
 									map[boardState[y][x].type][
 										boardState[y][x].color
 									]
-								].clone()}
+								].clone().geometry}
+								material={boardState[y][x].color == "black"
+									? $gltf.materials["03_-_Default"]
+									: $gltf.materials["02_-_Default"]}
 								position={boardState[y][x].color == "black"
 									? { y: 0.2, x: 0, z: 0 }
 									: { y: 0.2, x: 0, z: 0 }}
@@ -512,14 +530,19 @@
 									? { x: 4.65, z: 0 }
 									: { x: 4.65, z: 0 }}
 								scale={{ y: 0.045, z: 0.06, x: 0.045 }}
+								interactive
+								on:click={() => onClick(y, x)}
 							/>
 						{:else if boardState[y][x].type == "queen"}
-							<Object3DInstance
-								object={$gltf.nodes[
+							<Mesh
+								geometry={$gltf.nodes[
 									map[boardState[y][x].type][
 										boardState[y][x].color
 									]
-								].clone()}
+								].clone().geometry}
+								material={boardState[y][x].color == "black"
+									? $gltf.materials["03_-_Default"]
+									: $gltf.materials["02_-_Default"]}
 								position={boardState[y][x].color == "black"
 									? { y: 0.1, x: 1.3, z: -1.5 }
 									: { y: 0.1, x: 1.3, z: -1.5 }}
@@ -527,14 +550,19 @@
 									? { x: 4.65, z: 0 }
 									: { x: 4.65, z: 0 }}
 								scale={{ y: 0.045, z: 0.06, x: 0.045 }}
+								interactive
+								on:click={() => onClick(y, x)}
 							/>
 						{:else if boardState[y][x].type == "bishop"}
-							<Object3DInstance
-								object={$gltf.nodes[
+							<Mesh
+								geometry={$gltf.nodes[
 									map[boardState[y][x].type][
 										boardState[y][x].color
 									]
-								].clone()}
+								].clone().geometry}
+								material={boardState[y][x].color == "black"
+									? $gltf.materials["03_-_Default"]
+									: $gltf.materials["02_-_Default"]}
 								position={boardState[y][x].color == "black"
 									? { y: 0.1, x: 0, z: -1.55 }
 									: { y: 0.1, x: 0, z: -1.55 }}
@@ -542,21 +570,28 @@
 									? { x: 4.65, z: 0 }
 									: { x: 4.65, z: 0 }}
 								scale={{ y: 0.045, z: 0.055, x: 0.045 }}
+								interactive
+								on:click={() => onClick(y, x)}
 							/>
 						{:else if boardState[y][x].type == "king"}
-							<Object3DInstance
-								object={$gltf.nodes[
+							<Mesh
+								geometry={$gltf.nodes[
 									map[boardState[y][x].type][
 										boardState[y][x].color
 									]
-								].clone()}
+								].clone().geometry}
+								material={boardState[y][x].color == "black"
+									? $gltf.materials["01_-_Default"]
+									: $gltf.materials["02_-_Default"]}
 								position={boardState[y][x].color == "black"
 									? { y: 0.1, x: 0, z: -1.55 }
-									: { y: 0.1, x: 0, z: -1.55}}
+									: { y: 0.1, x: 0, z: -1.55 }}
 								rotation={boardState[y][x].color == "black"
 									? { x: 4.65, z: 0 }
 									: { x: 4.65, z: 0 }}
 								scale={{ y: 0.045, z: 0.06, x: 0.045 }}
+								interactive
+								on:click={() => onClick(y, x)}
 							/>
 						{/if}
 					</Three>

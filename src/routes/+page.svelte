@@ -50,9 +50,6 @@
 			},
 		});
 
-		const onMessage = (obj) => console.log(obj);
-		const onComplete = () => console.log("The stream has completed");
-
 		stream.then(readStream(readResponse));
 	}
 
@@ -85,7 +82,7 @@
 			if (response.game.source == "lobby") {
 				gameId = response.game.gameId;
 				gameStarted = true;
-				goto("https://createlab.io/"+gameId) 
+				goto("http://localhost:5173/"+gameId) 
 
 			}
 		}
@@ -163,7 +160,7 @@
 			headers: {
 				"content-type":"application/x-www-form-urlencoded"
 			},
-			body: `grant_type=authorization_code&code=${code}&code_verifier=${verifier}&redirect_uri=http://createlab.io/&client_id=lichess_park`
+			body: `grant_type=authorization_code&code=${code}&code_verifier=${verifier}&redirect_uri=http://localhost:5173/&client_id=lichess_park`
 		});
 
 		let data = await resp.json();
@@ -179,7 +176,7 @@
 		let verifier = generateCodeVerifier()
 		let codeChallenge = await generateCodeChallengeFromVerifier(verifier);
 
-		let route = `https://lichess.org/oauth?response_type=code&client_id=lichess_park&redirect_uri=http://createlab.io/&code_challenge=${codeChallenge}&code_challenge_method=S256&state=${verifier}&scope=board:play`
+		let route = `https://lichess.org/oauth?response_type=code&client_id=lichess_park&redirect_uri=http://localhost:5173/&code_challenge=${codeChallenge}&code_challenge_method=S256&state=${verifier}&scope=board:play`
 		goto(route) 
 	}
 </script>
