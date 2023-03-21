@@ -412,14 +412,15 @@
 <Three
 	type={PerspectiveCamera}
 	makeDefault
-	position={[30, 40, 40]}
+	position={[20, 26, 10]}
 	rotation={{ x: 2 }}
 	fov={36}
-	target={[10, 10, 10]}
+	castShadow
+	target={{y:20,x:400}}
 >
 	<AudioListener id="ear" />
 
-	<OrbitControls />
+	<OrbitControls target={{x:6,y:15,z:9}}/>
 
 
 </Three>
@@ -581,7 +582,7 @@
 									]
 								].clone().geometry}
 								material={boardState[y][x].color == "black"
-									? $gltf.materials["01_-_Default"]
+									? $gltf.materials["03_-_Default"]
 									: $gltf.materials["02_-_Default"]}
 								position={boardState[y][x].color == "black"
 									? { y: 0.1, x: 0, z: -1.55 }

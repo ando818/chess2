@@ -51,12 +51,12 @@
 	var light2 = new SpotLight(0xffffff);
 </script>
 
-<Canvas >
-	<Three type={DirectionalLight} args={[0xffffff, 1]} position={[0, 40, 0]} lookAt={[2,11,10]}}
+<Canvas shadows >
+	<Three type={DirectionalLight} args={[0xffffff, 1.5]} position={[0, 30, 30]} lookAt={[2,11,10]}}
 	castShadow={true} />
-	<Three type={HemisphereLight} args={[0xffffff, 0.05]} position={[0, 20, 0]}/>
+	<Three type={HemisphereLight} args={[0xffffff, 0.1]} position={[0, 20, 0]}/>
 
-	<GLTF  url="office_room2.glb" position={{ y: 0 }} scale={18} />
+	<GLTF     url="office_room2.glb" position={{ y: 0 }} scale={18} />
 
 	<!-- Example scene with boxes -->
 	{#if loaded}
