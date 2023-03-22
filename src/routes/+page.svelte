@@ -12,7 +12,9 @@
 	import { BoxBufferGeometry, MeshBasicMaterial } from "three";
 	import { BoxGeometry } from "three";
 	import { HTML } from "@threlte/extras";
-	import { authToken} from '$lib/store.js'
+	import { authToken } from "$lib/store.js";
+	import { Button } from "carbon-components-svelte";
+	import "carbon-components-svelte/css/white.css";
 
 	let loaded = false;
 	let accessToken;
@@ -21,8 +23,7 @@
 	onMount(async () => {
 		setTimeout(() => {
 			loaded = true;
-
-		}, 100)
+		}, 100);
 	});
 
 	let startTime = Date.now();
@@ -54,14 +55,16 @@
 	}
 
 	let finding = false;
-	async function start() {
+
+	async function seek(time,increment) {
 		finding = true;
-		
+		console.log("seek")
+
 		let resp = await fetch("https://lichess.org/api/board/seek", {
 			method: "POST",
-			body: "rated=true&time=10&increment=5",
+			body: `rated=true&time=${time}&increment=${increment}&variant=standard`,
 			headers: {
-				"content-type": "/x-www-form-urlencoded",
+				"content-type": "x-www-form-urlencoded",
 				Authorization: `Bearer lip_YsEt7QZd8auxRbXTTs54`,
 			},
 		});
@@ -82,8 +85,7 @@
 			if (response.game.source == "lobby") {
 				gameId = response.game.gameId;
 				gameStarted = true;
-				goto("https://createlab.io/"+gameId) 
-
+				goto("/multi/"+gameId);
 			}
 		}
 		loaded = true;
@@ -95,12 +97,8 @@
 	var light = new SpotLight(0xdad6c7);
 	var light2 = new SpotLight(0xdad6c7);
 
-	
 	function onClick() {
-		seek();
 	}
-
-
 
 	let loggedIn = false;
 	//Oauth
@@ -141,63 +139,77 @@
 		return base64encoded;
 	}
 
-
-
 	const urlParams = new URLSearchParams(window.location.search);
 	if (urlParams.has("code")) {
-		let code = urlParams.get('code')
+		let code = urlParams.get("code");
 
-		let state = urlParams.get('state')
+		let state = urlParams.get("state");
 
-		getAccessToken(code, state)
+		getAccessToken(code, state);
 	}
-	import { goto } from '$app/navigation';
+	import { goto } from "$app/navigation";
 
 	async function getAccessToken(code, verifier) {
-		let scopes="board:play"
-		let resp = await fetch('https://lichess.org/api/token', {
-			method:"POST",
+		let scopes = "board:play";
+		let resp = await fetch("https://lichess.org/api/token", {
+			method: "POST",
 			headers: {
-				"content-type":"application/x-www-form-urlencoded"
+				"content-type": "application/x-www-form-urlencoded",
 			},
-			body: `grant_type=authorization_code&code=${code}&code_verifier=${verifier}&redirect_uri=https://createlab.io/&client_id=lichess_park`
+			body: `grant_type=authorization_code&code=${code}&code_verifier=${verifier}&redirect_uri=http://localhost:5173/&client_id=lichess_park`,
 		});
 
 		let data = await resp.json();
 
 		accessToken = data.access_token;
 		$authToken = accessToken;
-		console.log($authToken)
+		console.log($authToken);
 		event();
 		loggedIn = true;
-
 	}
 	async function login() {
-		let verifier = generateCodeVerifier()
+		let verifier = generateCodeVerifier();
 		let codeChallenge = await generateCodeChallengeFromVerifier(verifier);
 
-		let route = `https://lichess.org/oauth?response_type=code&client_id=lichess_park&redirect_uri=https://createlab.io/&code_challenge=${codeChallenge}&code_challenge_method=S256&state=${verifier}&scope=board:play`
-		goto(route) 
+		let route = `https://lichess.org/oauth?response_type=code&client_id=lichess_park&redirect_uri=http://localhost:5173/&code_challenge=${codeChallenge}&code_challenge_method=S256&state=${verifier}&scope=board:play`;
+		goto(route);
 	}
 </script>
-
 
 {#if loaded}
 	<Canvas linear flat>
 		{#if loggedIn}
 			{#if !gameStarted}
-				<HTML position={{ y: 1.25, z: 1 }} transform>
-					<button
-						on:click={start}
-						on:touchstart={start}
-						class="bg-brand rounded-full px-3 text-white hover:opacity-90 active:opacity-70"
-					>
-					{#if !finding}
-						Find Match
-						{:else}
-						Finding Match...
-					{/if}
-					</button>
+				<HTML position={{ y: 2 }} scale={0.5} transform>
+					<div>
+						<Button
+							kind="tertiary"
+							style="width:100px; padding-left: 30px;"
+							on:click={() => seek(10,0)}
+							>10+0 Rapid</Button
+						>
+						<Button
+							kind="tertiary"
+							style="width:100px; padding-left: 30px;"
+							on:click={() => seek(10,5)}
+
+							>10+5 Rapid</Button
+						>
+						<Button
+							kind="tertiary"
+							style="width:100px; padding-left: 30px;"
+							on:click={() => seek(15,5)}
+
+							>15+5 Rapid</Button
+						>
+						<Button
+							kind="tertiary"
+							style="width:100px; padding-left: 25px;"
+							on:click={() => seek(30,0)}
+
+							>30+0 Classical</Button
+						>
+					</div>
 				</HTML>
 			{:else}
 				<LightInstance
@@ -223,14 +235,14 @@
 			{/if}
 		{:else}
 			<HTML position={{ y: 1.25, z: 1 }} transform>
-				<button
-					on:click={login}
-					on:touchstart={login}
 
-					class="bg-brand rounded-full px-3 text-white hover:opacity-90 active:opacity-70"
-				>
-					Login
-				</button>
+
+				<Button
+				kind="tertiary"
+				style="width:100px; padding-left: 30px;"
+				on:click={login}
+					on:touchstart={login}				>Login</Button
+			>
 			</HTML>
 		{/if}
 	</Canvas>

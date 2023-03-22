@@ -3,11 +3,15 @@
 		"src/routes/+layout.ts",
 		"src/routes/+layout.ts"
 	],
+	"/hafha": [
+		"src/routes/hafha/+page.server.js",
+		"src/routes/+layout.ts"
+	],
 	"/multi": [
 		"src/routes/+layout.ts"
 	],
-	"/[gameId]": [
-		"src/routes/[gameId]/+page.server.js",
+	"/multi/[gameId]": [
+		"src/routes/multi/[gameId]/+page.server.js",
 		"src/routes/+layout.ts"
 	]
 }

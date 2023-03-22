@@ -42,6 +42,7 @@
 		"@tweakpane/core": "^1.1.6",
 		"base64-arraybuffer": "^1.0.2",
 		"base64url": "^3.0.1",
+		"carbon-components-svelte": "^0.73.4",
 		"crypto": "^1.0.1",
 		"crypto.js": "^3.1.0",
 		"ionic-svelte": "^0.5.72",

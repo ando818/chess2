@@ -1,0 +1,8 @@
+Model Information:
+* title:	Chess Board - #3December2020 Day4 - Board Game
+* source:	https://sketchfab.com/3d-models/chess-board-3december2020-day4-board-game-12f3187003da4241bf8210b86cfa00f5
+* author:	LordDiego (https://sketchfab.com/LordDiego)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works

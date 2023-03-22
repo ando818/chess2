@@ -256,9 +256,6 @@
 
 		let copyPiece = boardState[from.y][from.x];
 
-		console.log("Piece", copyPiece);
-		console.log("to", boardState[to.y][to.x]);
-		console.log("from", boardState[from.y][from.x]);
 		boardState[to.y][to.x] = {
 			type: copyPiece.type,
 			color: copyPiece.color,
@@ -416,6 +413,7 @@
 	rotation={{ x: 2 }}
 	fov={36}
 	castShadow
+	receiveShadow
 	target={{y:20,x:400}}
 >
 	<AudioListener id="ear" />
@@ -482,6 +480,8 @@
 					>
 						{#if boardState[y][x].type == "pawn"}
 							<Mesh
+							castShadow
+							receiveShadow
 								geometry={$gltf.nodes[
 									map[boardState[y][x].type][
 										boardState[y][x].color
@@ -498,6 +498,7 @@
 							/>
 						{:else if boardState[y][x].type == "knight"}
 							<Mesh
+							castShadow
 								geometry={$gltf.nodes[
 									map[boardState[y][x].type][
 										boardState[y][x].color
@@ -516,6 +517,7 @@
 							/>
 						{:else if boardState[y][x].type == "rook"}
 							<Mesh
+							receiveShadow
 								geometry={$gltf.nodes[
 									map[boardState[y][x].type][
 										boardState[y][x].color
@@ -556,6 +558,7 @@
 							/>
 						{:else if boardState[y][x].type == "bishop"}
 							<Mesh
+							receiveShadow
 								geometry={$gltf.nodes[
 									map[boardState[y][x].type][
 										boardState[y][x].color
@@ -576,6 +579,7 @@
 							/>
 						{:else if boardState[y][x].type == "king"}
 							<Mesh
+							receiveShadow
 								geometry={$gltf.nodes[
 									map[boardState[y][x].type][
 										boardState[y][x].color
