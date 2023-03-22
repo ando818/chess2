@@ -12,7 +12,7 @@ let meshConfig = {
             name: "Rook_White001_Wood_0",
         },
         black: {
-            name: "Bishop_White001_Wood_0",
+            name: "Rook_Black001_WoodDark_0",
         },
     },
     knight: {

@@ -31,24 +31,22 @@
     export let boardConfig;
     export let gameId;
 
-
-    let board = []
-    let meshes = {}
+    let board = [];
+    let meshes = {};
 
     let meshConfig = boardConfig.meshConfig;
-    const { gltf } = useGltf("/"+boardConfig.modelSrc);
-    console.log(boardConfig.modelSrc, $gltf)
+    const { gltf } = useGltf("/" + boardConfig.modelSrc);
+    console.log(boardConfig.modelSrc, $gltf);
 
     let loaded = false;
     onMount(() => {
-        console.log("auth",$authToken)
+        console.log("auth", $authToken);
         initBoard();
         streamGame();
         loaded = true;
         setTimeout(() => {
-            console.log(boardConfig.modelSrc, $gltf)
-
-        },3000)
+            console.log(boardConfig.modelSrc, $gltf);
+        }, 3000);
     });
 
     let id = 0;
@@ -145,6 +143,10 @@
             for (let j = 0; j < 8; j++) {
                 let piece = board[i][j];
 
+                piece.position = {
+                    x: i,
+                    y: j
+                }
                 meshes[piece.id] = {
                     position: {
                         x: startPos.x + i * 0.06,
@@ -196,19 +198,20 @@
     function movePiece(from, to, playSound) {
         let pieceMoving = board[from.x][from.y];
 
-        let copyPiece = board[from.x][from.y];
-
-        board[to.x][to.y] = {
-            type: copyPiece.type,
-            color: copyPiece.color,
-            id: copyPiece.id,
-        };
+        board[to.x][to.y] = copyPiece(board[from.x][from.y]);
 
         board[from.x][from.y].type = null;
         board[from.x][from.y].color = null;
 
         let xDelta = to.x - from.x;
         let yDelta = to.y - from.y;
+
+        pieceMoving.position = {
+            x: to.x,
+            y: to.y
+        }
+
+        let rookPosition = checkCastle(from, to);
         animate(pieceMoving, xDelta * size, yDelta * size);
 
         if (playSound) {
@@ -230,7 +233,7 @@
         stream.then(readStream(readResponse));
     }
     function readResponse(response) {
-        console.log(response)
+        console.log(response);
         if (response.type == "gameState") {
             moves = response.moves;
             renderMove();
@@ -322,9 +325,9 @@
         }
     }
 
- 
     let picked;
     function onClick(x, y) {
+        console.log(x, y);
         if (!picked && board[x][y].type) {
             picked = {
                 x,
@@ -338,9 +341,53 @@
             let second = toPos(x, y);
 
             let made = makeMove(`${first}${second}`);
-
             picked = null;
         }
+    }
+
+    function checkCastle(from, to) {
+        let x1;
+        if (from.x == 0 && from.y == 4 && to.x == 0) {
+            if (to.y == 6) {
+                animate(board[0][7],0,-2*size)
+                board[0][5] = copyPiece(board[0][7])
+                board[0][7] = {
+                    type:null
+                };
+            } if (to.y == 2) {
+                animate(board[0][0],0,3*size)
+                board[0][4] = copyPiece(board[0][0])
+                board[0][0] = {
+                    type:null
+                };
+            }
+        }
+        if (from.x == 7 && from.y == 4 && to.x == 7) {
+            if (to.y == 6) {
+                animate(board[7][7],0,-2*size)
+                board[7][5] = copyPiece(board[7][7])
+                board[7][7] = {
+                    type:null
+                };
+            } if (to.y == 2) {
+                animate(board[7][0],0,3*size)
+                board[7][4] = copyPiece(board[7][0])
+                board[7][0] = {
+                    type:null
+                };
+            }
+
+        }
+
+        return false;
+    }
+
+    function copyPiece(piece) {
+        return {
+            type: piece.type,
+            color: piece.color,
+            id: piece.id,
+        };
     }
 </script>
 

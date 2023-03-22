@@ -62,9 +62,13 @@
 
 		let resp = await fetch("https://lichess.org/api/board/seek", {
 			method: "POST",
-			body: `rated=true&time=${time}&increment=${increment}&variant=standard`,
+			body: new URLSearchParams({
+				rated:true,
+				time,
+				increment
+			}),
 			headers: {
-				"content-type": "x-www-form-urlencoded",
+				"content-type": "application/x-www-form-urlencoded",
 				Authorization: `Bearer lip_YsEt7QZd8auxRbXTTs54`,
 			},
 		});
@@ -82,7 +86,8 @@
 			console.log("mpves", moves);
 		} else if (response.type == "gameStart") {
 			console.log(startTime);
-			if (response.game.source == "lobby") {
+			if (response.game.source == "lobby" || 
+			response.game.source == "pool") {
 				gameId = response.game.gameId;
 				gameStarted = true;
 				goto("/multi/"+gameId);
@@ -177,7 +182,7 @@
 </script>
 
 {#if loaded}
-	<Canvas linear flat>
+	<Canvas >
 		{#if loggedIn}
 			{#if !gameStarted}
 				<HTML position={{ y: 2 }} scale={0.5} transform>
@@ -212,26 +217,7 @@
 					</div>
 				</HTML>
 			{:else}
-				<LightInstance
-					{light}
-					intensity={5}
-					position={{ x: 0, y: 10 }}
-				/>
-				<LightInstance
-					{light}
-					intensity={2}
-					position={{ z: 10, y: 20 }}
-				/>
-				<LightInstance
-					light={light2}
-					intensity={2}
-					position={{ z: -10, y: 20 }}
-				/>
-
-				/>
-
-				<!-- Example scene with boxes -->
-				<Scene {gameId} {moves} />
+		
 			{/if}
 		{:else}
 			<HTML position={{ y: 1.25, z: 1 }} transform>

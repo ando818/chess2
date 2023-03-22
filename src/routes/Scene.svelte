@@ -434,7 +434,6 @@
 		/>
 	{/if}
 	{#if loaded}
-		<Audio autoplay loop id="ear" source={"birds.mp3"} />
 		<Audio id="ear" source={"move-self.mp3"} bind:this={audio} bind:play />
 
 		{#each { length: 8 } as h, x}
