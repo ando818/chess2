@@ -11,7 +11,6 @@
     let fen = "rn2kb1r/pp2pp1p/2p2p2/8/8/3Q1N2/qPPB1PPP/2KR3R w kq - 0 1";
     let Game;
     let board = [];
-    console.log("dat",data)
 
     let history = data.history ? data.history : []
 
@@ -101,31 +100,25 @@
         }
     }
 
-    async function replay() {
+    async function replay(save=true) {
+        console.log('yo, ', history)
         Game = new ChessGame(fen);
         initBoard("rn2kb1r/pp2pp1p/2p2p2/8/8/3Q1N2/qPPB1PPP/2KR3R/");
-        setTimeout(async () => {
-            let data = await takeScreenshot();
-            images.push(data);
-        }, 50);
 
         for (let i = 0; i < history.length; i++) {
             let m = history[i];
             setTimeout(async () => {
                 console.log(m);
                 move(toPos(m.fromNotated), toPos(m.toNotated), false);
-                setTimeout(async () => {
-                    let image = await takeScreenshot();
-                    images.push(image);
-                    images = images;
-                }, 100);
+    
             }, 500 + i * 500);
         }
 
         let nodes = document.getElementsByClassName("image");
         images = images;
 
-        fetch("./abc", {
+        if (save) {
+        fetch("./1", {
             method: "POST",
             body: JSON.stringify({
                 fen,
@@ -133,17 +126,14 @@
                 route: data.replayId
             })
         });
-        $replayState["abc"] = {
-            fen,
-            history,
-        };
-
+    }
         console.log($replayState);
     }
 
     onMount(() => {
         initBoard("rn2kb1r/pp2pp1p/2p2p2/8/8/3Q1N2/qPPB1PPP/2KR3R/");
         Game = new ChessGame(fen);
+        replay(false);
     });
 
     async function takeScreenshot() {
@@ -178,7 +168,7 @@
     {/each}
 </div>
 
-<button on:click={() => replay()}>Replay</button>
+<button on:click={() => replay(true)}>Replay</button>
 
 <style>
     .dark {
