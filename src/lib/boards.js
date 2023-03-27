@@ -64,11 +64,23 @@ export let board2D = {
         src: "/2d/bishop_black.png"
 
     },
+    "r": {
+        src: "/2d/rook_black.png"
+    },
+    "R": {
+        src: "/2d/rook_white.png"
+    },
     "K": {
         src: "/2d/king_white.png"
     },
     "k": {
         src: "/2d/king_black.png"
+    },
+    "n": {
+        src: "/2d/knight_black.png"
+    },
+    "N": {
+        src: "/2d/knight_white.png"
     },
     "Q": {
         src: "/2d/queen_white.png"

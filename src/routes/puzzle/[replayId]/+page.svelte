@@ -8,7 +8,7 @@
 
     export let data;
 
-    let fen = "r4k1r/ppp2p1p/5qp1/2bP4/6b1/1BP2N2/PP4PP/R1BQR2K b - - 0 15";
+    let fen = "rn2kb1r/pp2pp1p/2p2p2/8/8/3Q1N2/qPPB1PPP/2KR3R w kq - 0 1";
     let Game;
     let board = [];
     console.log("dat",data)
@@ -103,7 +103,7 @@
 
     async function replay() {
         Game = new ChessGame(fen);
-        initBoard("r4k1r/ppp2p1p/5qp1/2bP4/6b1/1BP2N2/PP4PP/R1BQR2K/");
+        initBoard("rn2kb1r/pp2pp1p/2p2p2/8/8/3Q1N2/qPPB1PPP/2KR3R/");
         setTimeout(async () => {
             let data = await takeScreenshot();
             images.push(data);
@@ -142,7 +142,7 @@
     }
 
     onMount(() => {
-        initBoard("r4k1r/ppp2p1p/5qp1/2bP4/6b1/1BP2N2/PP4PP/R1BQR2K/");
+        initBoard("rn2kb1r/pp2pp1p/2p2p2/8/8/3Q1N2/qPPB1PPP/2KR3R/");
         Game = new ChessGame(fen);
     });
 
