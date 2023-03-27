@@ -3,10 +3,6 @@
 		"src/routes/+layout.ts",
 		"src/routes/+layout.ts"
 	],
-	"/hafha": [
-		"src/routes/hafha/+page.server.js",
-		"src/routes/+layout.ts"
-	],
 	"/he": [
 		"src/routes/+layout.ts"
 	],
