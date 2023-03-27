@@ -1,0 +1,11 @@
+Model Information:
+* title:	Victorian Armchair
+* source:	https://sketchfab.com/3d-models/victorian-armchair-8ab8caf90a0b4d47ac2dc7911febfa66
+* author:	Graham (https://sketchfab.com/Graham.Jolliffe)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Victorian Armchair" (https://sketchfab.com/3d-models/victorian-armchair-8ab8caf90a0b4d47ac2dc7911febfa66) by Graham (https://sketchfab.com/Graham.Jolliffe) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

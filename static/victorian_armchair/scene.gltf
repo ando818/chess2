@@ -1,0 +1,260 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 863,
+      "max": [
+        0.10461129993200302,
+        0.19452820718288422,
+        0.16624659299850464
+      ],
+      "min": [
+        -0.10508090257644653,
+        0.03299802169203758,
+        -0.15439459681510925
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 10356,
+      "componentType": 5126,
+      "count": 863,
+      "max": [
+        0.9889217019081116,
+        0.9999912977218628,
+        0.9993174076080322
+      ],
+      "min": [
+        -0.9890356063842773,
+        -0.9997622966766357,
+        -0.9986956715583801
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 863,
+      "max": [
+        0.9997572898864746,
+        0.9999083280563354,
+        0.9999985694885254,
+        1.0
+      ],
+      "min": [
+        -0.9997628927230835,
+        -0.9950817823410034,
+        -0.9999945163726807,
+        1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 863,
+      "max": [
+        0.9986262917518616,
+        0.9763733148574829
+      ],
+      "min": [
+        0.0013736479450017214,
+        0.0013736479450017214
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 3168,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "Graham (https://sketchfab.com/Graham.Jolliffe)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/victorian-armchair-8ab8caf90a0b4d47ac2dc7911febfa66",
+      "title": "Victorian Armchair"
+    },
+    "generator": "Sketchfab-12.64.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 12672,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 6904,
+      "byteOffset": 12672,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 20712,
+      "byteOffset": 19576,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 13808,
+      "byteOffset": 40288,
+      "byteStride": 16,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 54096,
+      "uri": "scene.bin"
+    }
+  ],
+  "images": [
+    {
+      "uri": "textures/Armchair_baseColor.png"
+    },
+    {
+      "uri": "textures/Armchair_metallicRoughness.png"
+    },
+    {
+      "uri": "textures/Armchair_normal.png"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "Armchair",
+      "normalTexture": {
+        "index": 2
+      },
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicRoughnessTexture": {
+          "index": 1
+        }
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Armchair-material",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3
+          },
+          "indices": 4,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        -1.0,
+        0.0,
+        0.0,
+        1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "name": "Collada visual scene group"
+    },
+    {
+      "children": [
+        3
+      ],
+      "matrix": [
+        13.1819,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        13.1819,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        13.1819,
+        0.0,
+        0.680383,
+        -1.972761,
+        4.51152,
+        1.0
+      ],
+      "name": "ChairOrignal"
+    },
+    {
+      "mesh": 0,
+      "name": "Armchair-material"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    },
+    {
+      "sampler": 0,
+      "source": 2
+    }
+  ]
+}

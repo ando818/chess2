@@ -1,0 +1,267 @@
+{
+  "accessors": [
+    {
+      "componentType": 5125,
+      "count": 3168,
+      "type": "SCALAR"
+    },
+    {
+      "componentType": 5126,
+      "count": 863,
+      "max": [
+        0.9950336460973701,
+        1.0078334686802881,
+        1.0089000937985437
+      ],
+      "min": [
+        -0.9968777773427028,
+        -1.0076044676350613,
+        -1.0065378425168057
+      ],
+      "type": "VEC3"
+    },
+    {
+      "componentType": 5126,
+      "count": 863,
+      "max": [
+        0.10481611469284641,
+        0.1946500529024184,
+        0.166403232563631
+      ],
+      "min": [
+        -0.10523754214157287,
+        0.03284138212691125,
+        -0.1545512363802356
+      ],
+      "type": "VEC3"
+    },
+    {
+      "componentType": 5126,
+      "count": 863,
+      "max": [
+        1.0080733032787546,
+        1.0049113035202024,
+        1.0078416796291574,
+        1.0078431101406322
+      ],
+      "min": [
+        -1.0076060028637157,
+        -1.0029248924816356,
+        -1.0078376265133129,
+        0.9921568898593678
+      ],
+      "type": "VEC4"
+    },
+    {
+      "componentType": 5126,
+      "count": 863,
+      "max": [
+        0.9996011232707344,
+        0.9771799983366602
+      ],
+      "min": [
+        0.0003988164261289356,
+        0.0003988164261289356
+      ],
+      "type": "VEC2"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "Graham (https://sketchfab.com/Graham.Jolliffe)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/victorian-armchair-8ab8caf90a0b4d47ac2dc7911febfa66",
+      "title": "Victorian Armchair"
+    },
+    "generator": "Sketchfab-12.64.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteOffset": 0,
+      "byteLength": 17745
+    }
+  ],
+  "buffers": [
+    {
+      "name": "draco",
+      "byteLength": 17752,
+      "uri": "draco.bin"
+    }
+  ],
+  "images": [
+    {
+      "name": "Armchair_baseColor",
+      "uri": "textures/Armchair_baseColor.png"
+    },
+    {
+      "name": "Armchair_metallicRoughness",
+      "uri": "textures/Armchair_metallicRoughness.png"
+    },
+    {
+      "name": "Armchair_normal",
+      "uri": "textures/Armchair_normal.png"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "Armchair",
+      "normalTexture": {
+        "index": 2,
+        "texCoord": 0
+      },
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0,
+          "texCoord": 0
+        },
+        "metallicRoughnessTexture": {
+          "index": 1,
+          "texCoord": 0
+        },
+        "baseColorFactor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "metallicFactor": 1,
+        "roughnessFactor": 1
+      },
+      "emissiveFactor": [
+        0,
+        0,
+        0
+      ],
+      "alphaMode": "OPAQUE"
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Armchair-material",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 2,
+            "TANGENT": 3,
+            "TEXCOORD_0": 4
+          },
+          "indices": 0,
+          "material": 0,
+          "mode": 4,
+          "extensions": {
+            "KHR_draco_mesh_compression": {
+              "bufferView": 0,
+              "attributes": {
+                "NORMAL": 0,
+                "POSITION": 1,
+                "TANGENT": 2,
+                "TEXCOORD_0": 3
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        2.220446049250313e-16,
+        -1,
+        0,
+        0,
+        1,
+        2.220446049250313e-16,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "name": "Collada visual scene group"
+    },
+    {
+      "children": [
+        3
+      ],
+      "matrix": [
+        13.1819,
+        0,
+        0,
+        0,
+        0,
+        13.1819,
+        0,
+        0,
+        0,
+        0,
+        13.1819,
+        0,
+        0.680383,
+        -1.972761,
+        4.51152,
+        1
+      ],
+      "name": "ChairOrignal"
+    },
+    {
+      "mesh": 0,
+      "name": "Armchair-material"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    },
+    {
+      "sampler": 0,
+      "source": 2
+    }
+  ],
+  "extensionsRequired": [
+    "KHR_draco_mesh_compression"
+  ],
+  "extensionsUsed": [
+    "KHR_draco_mesh_compression"
+  ]
+}

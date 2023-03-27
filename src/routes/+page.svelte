@@ -1,17 +1,10 @@
 <script lang="ts">
-	import { useTweakpane } from "./useTweakpane";
-	import { Canvas, Mesh } from "@threlte/core";
-	import { Grid } from "@threlte/extras";
-	import Scene from "./Scene.svelte";
-	import { GLTF } from "@threlte/extras";
-	import { LightInstance } from "@threlte/core";
+	import { Canvas } from "@threlte/core";
 	import { AmbientLight } from "three";
 	import { onMount } from "svelte";
+	import {HTML} from '@threlte/extras'
 	import { jsonStream, readStream } from "./jsonStream";
 	import { DirectionalLight, SpotLight } from "three";
-	import { BoxBufferGeometry, MeshBasicMaterial } from "three";
-	import { BoxGeometry } from "three";
-	import { HTML } from "@threlte/extras";
 	import { authToken } from "$lib/store.js";
 	import { Button } from "carbon-components-svelte";
 	import "carbon-components-svelte/css/white.css";
@@ -185,7 +178,7 @@
 	<Canvas >
 		{#if loggedIn}
 			{#if !gameStarted}
-				<HTML position={{ y: 2 }} scale={0.5} transform>
+				<HTML position={{ y: 2 }} scale={0.1} transform>
 					<div>
 						<Button
 							kind="tertiary"
@@ -220,15 +213,9 @@
 		
 			{/if}
 		{:else}
-			<HTML position={{ y: 1.25, z: 1 }} transform>
+			<HTML position={{ y: 0, z: 1 }} transform>
 
-
-				<Button
-				kind="tertiary"
-				style="width:100px; padding-left: 30px;"
-				on:click={login}
-					on:touchstart={login}				>Login</Button
-			>
+				
 			</HTML>
 		{/if}
 	</Canvas>

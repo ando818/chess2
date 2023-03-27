@@ -7,11 +7,20 @@
 		"src/routes/hafha/+page.server.js",
 		"src/routes/+layout.ts"
 	],
-	"/multi": [
+	"/he": [
 		"src/routes/+layout.ts"
 	],
 	"/multi/[gameId]": [
 		"src/routes/multi/[gameId]/+page.server.js",
 		"src/routes/+layout.ts"
+	],
+	"/puzzle": [
+		"src/routes/puzzle/+page.server.js",
+		"src/routes/+layout.ts"
+	],
+	"/puzzle/[replayId]": [
+		"src/routes/puzzle/[replayId]/+page.server.js",
+		"src/routes/+layout.ts",
+		"src/routes/puzzle/[replayId]/+server.js"
 	]
 }

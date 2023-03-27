@@ -19,6 +19,7 @@ function getSafetyParsedJsonFromLocalStorage(key) {
 	}
 }
 
+
 /**
  *  Local Storage for debug flag
  */
@@ -30,3 +31,5 @@ authToken.subscribe((u) => {
 		localStorage.setItem('authToken', JSON.stringify(u));
 	}
 });
+
+export const replayState = writable({})
