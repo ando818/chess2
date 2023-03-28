@@ -8,18 +8,20 @@
 
     export let data;
 
-    let fen = "rn2kb1r/pp2pp1p/2p2p2/8/8/3Q1N2/qPPB1PPP/2KR3R w kq - 0 1";
+    let fen = data.fen;
     let Game;
     let board = [];
 
     let history = data.history ? data.history : []
 
     let images = [];
-    function initBoard(fen) {
+    function initBoard() {
+        let fenShort = fen.split(" ")[0] + "/"
+
         board = [];
         let row = [];
-        for (let i = 0; i < fen.length; i++) {
-            let c = fen[i];
+        for (let i = 0; i < fenShort.length; i++) {
+            let c = fenShort[i];
             if (c == "/") {
                 board.push(row);
                 row = [];
@@ -103,7 +105,7 @@
     async function replay(save=true) {
         console.log('yo, ', history)
         Game = new ChessGame(fen);
-        initBoard("rn2kb1r/pp2pp1p/2p2p2/8/8/3Q1N2/qPPB1PPP/2KR3R/");
+        initBoard();
 
         for (let i = 0; i < history.length; i++) {
             let m = history[i];
@@ -131,7 +133,7 @@
     }
 
     onMount(() => {
-        initBoard("rn2kb1r/pp2pp1p/2p2p2/8/8/3Q1N2/qPPB1PPP/2KR3R/");
+        initBoard();
         Game = new ChessGame(fen);
         replay(false);
     });

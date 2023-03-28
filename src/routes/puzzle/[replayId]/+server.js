@@ -10,4 +10,7 @@ export async function POST({ request }) {
   let replay = get(replayState);
   replay[data.route] = data
   replayState.set(replay)
+  return {
+      status: 200
+  }
 }
