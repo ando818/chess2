@@ -184,8 +184,9 @@
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
         grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-        width: 320px;
-        height: 320px;
+        width: 100vw;
+        height: auto;
+        margin:auto;
     }
 
     .selected {
