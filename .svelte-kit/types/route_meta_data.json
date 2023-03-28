@@ -18,5 +18,8 @@
 		"src/routes/puzzle/[replayId]/+page.server.js",
 		"src/routes/+layout.ts",
 		"src/routes/puzzle/[replayId]/+server.js"
+	],
+	"/tone": [
+		"src/routes/+layout.ts"
 	]
 }
