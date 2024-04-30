@@ -49,7 +49,49 @@ let meshConfig = {
     },
 };
 
+export let board2D = {
+    "P": {
+        src: "/2d/pawn_white.png"
+    },
+    "p": {
+        src: "/2d/pawn_black.png"
+    },
+    "B": {
+        src: "/2d/bishop_white.png"
+
+    },
+    "b": {
+        src: "/2d/bishop_black.png"
+
+    },
+    "r": {
+        src: "/2d/rook_black.png"
+    },
+    "R": {
+        src: "/2d/rook_white.png"
+    },
+    "K": {
+        src: "/2d/king_white.png"
+    },
+    "k": {
+        src: "/2d/king_black.png"
+    },
+    "n": {
+        src: "/2d/knight_black.png"
+    },
+    "N": {
+        src: "/2d/knight_white.png"
+    },
+    "Q": {
+        src: "/2d/queen_white.png"
+    },
+    "q": {
+        src: "/2d/queen_black.png"
+    }
+
+}
+
 export let defaultBoard = {
     meshConfig,
-    modelSrc: "scene.gltf"
+    modelSrc: "purchased.gltf"
 }

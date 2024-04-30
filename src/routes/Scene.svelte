@@ -4,17 +4,16 @@
 		Group,
 		MeshBasicMaterial,
 		LineSegments,
-		EdgesGeometry,
 	} from "three";
 	import { PositionalAudio, AudioListener, Audio } from "@threlte/core";
-	import { Three } from "@threlte/core";
+	import { T } from "@threlte/core";
 	import { GLTF, useGltfAnimations } from "@threlte/extras";
 	import { BoxBufferGeometry } from "three";
 	import { Object3D } from "@threlte/core";
 	import { OrbitControls, Mesh, Object3DInstance } from "@threlte/core";
 	import { BoxGeometry } from "three";
 	import { onMount } from "svelte";
-	import { useGltf, ContactShadows } from "@threlte/extras";
+	import { useGltf, } from "@threlte/extras";
 	import { authToken } from "$lib/store";
 	let currentActionKey = "idle";
 
@@ -406,8 +405,8 @@
 	let play = false;
 </script>
 
-<Three
-	type={PerspectiveCamera}
+<T
+	id={PerspectiveCamera}
 	makeDefault
 	position={[20, 26, 10]}
 	rotation={{ x: 2 }}
@@ -421,7 +420,7 @@
 	<OrbitControls target={{x:6,y:15,z:9}}/>
 
 
-</Three>
+</T>
 
 <!-- Make a box in every second cell to show aligment -->
 

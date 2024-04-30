@@ -1,0 +1,11 @@
+Model Information:
+* title:	Tekeh Bukhara Carpet
+* source:	https://sketchfab.com/3d-models/tekeh-bukhara-carpet-ef1d1b09eee740b6914aaf67cfd0d327
+* author:	mfb64 (https://sketchfab.com/mfb64)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Tekeh Bukhara Carpet" (https://sketchfab.com/3d-models/tekeh-bukhara-carpet-ef1d1b09eee740b6914aaf67cfd0d327) by mfb64 (https://sketchfab.com/mfb64) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

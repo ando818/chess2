@@ -1,7 +1,6 @@
 <script>
     import { Canvas } from "@threlte/core";
     import { GLTF } from "@threlte/extras";
-    import { LightInstance } from "@threlte/core";
     import {
         DirectionalLight,
         SpotLight,
@@ -9,12 +8,14 @@
         MeshPhysicalMaterial,
         Color,
     } from "three";
-    import { PositionalAudio, AudioListener, Audio } from "@threlte/core";
 
-    import { Three } from "@threlte/core";
-    import { OrbitControls, Mesh, Object3DInstance } from "@threlte/core";
-    import { useGltf, ContactShadows } from "@threlte/extras";
+    import { T} from "@threlte/core";
+    import { useLoader } from '@threlte/core'
+
     import { BoxGeometry } from "three";
+    import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+    import { interactivity } from '@threlte/extras'
+  interactivity()
     import { authToken } from "$lib/store";
     import { jsonStream, readStream } from "./jsonStream";
     import {
@@ -22,9 +23,9 @@
         Group,
         MeshBasicMaterial,
         LineSegments,
-        EdgesGeometry,
     } from "three";
     import { onMount } from "svelte";
+    import { useGltf } from '@threlte/extras'
 
     let play;
 
@@ -35,8 +36,8 @@
     let meshes = {};
 
     let meshConfig = boardConfig.meshConfig;
-    const { gltf } = useGltf("/" + boardConfig.modelSrc);
-    console.log(boardConfig.modelSrc, $gltf);
+    console.log("/"+boardConfig.modelSrc)
+    const  gltf = useGltf("/"+boardConfig.modelSrc);
 
     let loaded = false;
     onMount(() => {
@@ -46,7 +47,7 @@
         loaded = true;
         setTimeout(() => {
             console.log(boardConfig.modelSrc, $gltf);
-        }, 3000);
+        }, 2000);
     });
 
     let id = 0;
@@ -130,14 +131,14 @@
             });
         }
 
-        board[0] = createInitial("black");
-        board[1] = createPawnRow("black");
+        board[0] = createInitial("white");
+        board[1] = createPawnRow("white");
         board[2] = createNullRow();
         board[3] = createNullRow();
         board[4] = createNullRow();
         board[5] = createNullRow();
-        board[6] = createPawnRow("white");
-        board[7] = createInitial("white");
+        board[6] = createPawnRow("black");
+        board[7] = createInitial("black");
 
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
@@ -148,11 +149,11 @@
                     y: j
                 }
                 meshes[piece.id] = {
-                    position: {
-                        x: startPos.x + i * 0.06,
-                        y: startPos.y,
-                        z: startPos.z - j * 0.06,
-                    },
+                    position: [
+                        startPos.x + i * 0.06,
+                        startPos.y,
+                        startPos.z - j * 0.06,
+                ]
                 };
             }
         }
@@ -279,33 +280,33 @@
 
         let letterNumber;
         if (letter == "a") {
-            letterNumber = 0;
-        }
-        if (letter == "b") {
             letterNumber = 1;
         }
-        if (letter == "c") {
+        if (letter == "b") {
             letterNumber = 2;
         }
-        if (letter == "d") {
+        if (letter == "c") {
             letterNumber = 3;
         }
-        if (letter == "e") {
+        if (letter == "d") {
             letterNumber = 4;
         }
-        if (letter == "f") {
+        if (letter == "e") {
             letterNumber = 5;
         }
-        if (letter == "g") {
+        if (letter == "f") {
             letterNumber = 6;
         }
-        if (letter == "h") {
+        if (letter == "g") {
             letterNumber = 7;
+        }
+        if (letter == "h") {
+            letterNumber = 8;
         }
 
         return {
             y: letterNumber,
-            x: 8 - number,
+            x: number,
         };
     }
 
@@ -392,32 +393,31 @@
 </script>
 
 {#if $gltf && loaded}
-    <Audio id="ear" source={"/move-self.mp3"} bind:play />
 
-    <Mesh
+    <T.Mesh
         geometry={$gltf.nodes["Chess_Board_WoodDark_0"].geometry}
         material={$gltf.materials["WoodDark"]}
         scale={1}
-        position={{ y: 0.55 }}
-        rotation={{ x: 4.71 }}
+        position={[0, 0.55,0]}
+        rotation={[4.71,0,0]}
     />
-    <Mesh
+    <T.Mesh
         geometry={$gltf.nodes["Chess_Board_Wood_0"].geometry}
         material={$gltf.materials["Wood"]}
         scale={1}
-        position={{ y: 0.55 }}
-        rotation={{ x: 1.57, z: 1.58 }}
+        position={[0,0.55,0]}
+        rotation={[1.57,0,1.58]}
     />
 
     {#each board as col, x}
         {#each col as piece, y}
-            <Mesh
+            <T.Mesh
                 geometry={new BoxGeometry(0.06, 0.06, 0.06)}
-                position={{
-                    x: startPos.x + 0.01 + 0.06 * x,
-                    y: startPos.y - 0.027,
-                    z: startPos.z - 0.06 * y,
-                }}
+                position={[
+                    startPos.x + 0.01 + 0.06 * x,
+                    startPos.y - 0.027,
+                    startPos.z - 0.06 * y,
+                ]}
                 material={new MeshBasicMaterial({
                     opacity: 0,
                     transparent: true,
@@ -427,7 +427,7 @@
             />
 
             {#if piece.type != null && piece.type in meshConfig}
-                <Mesh
+                <T.Mesh
                     castShadow
                     receiveShadow
                     geometry={$gltf.nodes[
@@ -438,7 +438,7 @@
                     ]}
                     scale={1.25}
                     position={meshes[piece.id].position}
-                    rotation={{ x: -1.5 }}
+                    rotation={[-1.5,0,0] }
                     interactive
                     on:click={() => onClick(x, y)}
                 />

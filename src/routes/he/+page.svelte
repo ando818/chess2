@@ -1,0 +1,5 @@
+<script>
+
+	let fen = "";
+</script>
+
