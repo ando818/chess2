@@ -2,7 +2,6 @@
 	import { useTweakpane } from "./useTweakpane";
 	import { Canvas, Mesh } from "@threlte/core";
 	import { Grid } from "@threlte/extras";
-	import Scene from "./Scene.svelte";
 	import { GLTF } from "@threlte/extras";
 	import { LightInstance } from "@threlte/core";
 	import { AmbientLight } from "three";
