@@ -42,12 +42,7 @@
 
 		pollGamepads();
 
-		console.log(gp.buttons);
 	});
-
-	setTimeout(() => {
-		console.log($gltf);
-	}, 3000);
 
 	let selectedX = 2;
 	let selectedY = 2;
@@ -77,26 +72,21 @@
 		if (!gp.buttons[0].pressed && lastPress == 0) {
 			lastPress = null;
 			pressX();
-			console.log("press x");
 		}
 		if (!gp.buttons[15].pressed && lastPress == 15) {
 			lastPress = null;
-			console.log("press right");
 			moveRight();
 		}
 		if (!gp.buttons[14].pressed && lastPress == 14) {
 			lastPress = null;
-			console.log("press left");
 			moveLeft();
 		}
 		if (!gp.buttons[12].pressed && lastPress == 12) {
 			lastPress = null;
-			console.log("press up");
 			moveUp();
 		}
 		if (!gp.buttons[13].pressed && lastPress == 13) {
 			lastPress = null;
-			console.log("press down");
 			moveDown();
 		}
 	}
@@ -208,7 +198,6 @@
 		boardState[6] = createPawnRow("white");
 		boardState[7] = createInitial("white");
 
-		console.log("state", boardState[7][7]);
 		boardState = boardState;
 		positions = positions;
 
@@ -228,7 +217,6 @@
 	}
 	function renderMoves(playSound) {
 		if (moves) {
-			console.log("yo", moves);
 			let movesSplit = moves.split(" ");
 			movesSplit.forEach((move) => {
 				let pos1 = move.substring(0, 2);
@@ -335,9 +323,7 @@
 
 	let picked;
 	function onClick(y, x) {
-		console.log("ckicjed");
 		if (!picked && boardState[y][x].type) {
-			console.log("jufjsjfii");
 			picked = {
 				x,
 				y,
@@ -400,7 +386,6 @@
 	};
 
 	function playaudio() {
-		console.log("jij");
 	}
 
 	let play = false;
